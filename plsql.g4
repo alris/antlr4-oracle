@@ -1697,7 +1697,7 @@ xmlserialize_param_ident_part
 // SqlPlus
 
 sql_plus_command 
-    : ('/' | whenever_command | exit_command | prompt_command | set_command) ';'?
+    : ('/' | whenever_command | exit_command | prompt_command | set_command | call_sql_script_command) ';'?
     ;
 
 whenever_command
@@ -1713,8 +1713,13 @@ exit_command
     : EXIT 
     ;
 
+// alris fix
 prompt_command
-    : PROMPT
+    : SQLPLUS_PROMPT
+    ;
+
+call_sql_script_command
+    : SQLPLUS_CALLSCRIPT
     ;
 
 // Common
@@ -3036,6 +3041,8 @@ STDDEV:                       S T D D E V;
 VAR_:                         V A R '_';
 COVAR_:                       C O V A R '_';
 
+PROMPT:                       P R O M P T;
+
 fragment A: [aA];
 fragment B: [bB];
 fragment C: [cC];
@@ -3340,9 +3347,14 @@ MULTI_LINE_COMMENT: '/*' .*? '*/' -> channel(HIDDEN);
 
 // SQL*Plus prompt
 // TODO should be grammar rule, but tricky to implement
-PROMPT
-    : 'prompt' SPACE ( ~('\r' | '\n') )* (NEWLINE|EOF)
-    ;
+// PROMPT
+//     : 'prompt' SPACE ( ~('\r' | '\n') )* (NEWLINE|EOF)
+//     ;
+
+// alris fix
+SQLPLUS_PROMPT: PROMPT SPACE ( ~('\r' | '\n') )* (NEWLINE|EOF);
+
+SQLPLUS_CALLSCRIPT: AT_SIGN ( ~('\r' | '\n') )* (NEWLINE|EOF);
 
 //{ Rule #360 <NEWLINE>
 fragment
