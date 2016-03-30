@@ -99,6 +99,18 @@ public class plsqlBaseListener implements plsqlListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterFunction_spec(plsqlParser.Function_specContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFunction_spec(plsqlParser.Function_specContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterParallel_enable_clause(plsqlParser.Parallel_enable_clauseContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -231,30 +243,6 @@ public class plsqlBaseListener implements plsqlListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterProcedure_spec(plsqlParser.Procedure_specContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitProcedure_spec(plsqlParser.Procedure_specContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterFunction_spec(plsqlParser.Function_specContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitFunction_spec(plsqlParser.Function_specContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterPackage_obj_body(plsqlParser.Package_obj_bodyContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -298,6 +286,18 @@ public class plsqlBaseListener implements plsqlListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitCreate_procedure_body(plsqlParser.Create_procedure_bodyContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterProcedure_spec(plsqlParser.Procedure_specContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitProcedure_spec(plsqlParser.Procedure_specContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -1659,6 +1659,18 @@ public class plsqlBaseListener implements plsqlListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterPipe_row(plsqlParser.Pipe_rowContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitPipe_row(plsqlParser.Pipe_rowContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterSql_statement(plsqlParser.Sql_statementContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -2967,6 +2979,42 @@ public class plsqlBaseListener implements plsqlListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterSql_cursor_expression(plsqlParser.Sql_cursor_expressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSql_cursor_expression(plsqlParser.Sql_cursor_expressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCollection_type_functions(plsqlParser.Collection_type_functionsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCollection_type_functions(plsqlParser.Collection_type_functionsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCollection_type_expression(plsqlParser.Collection_type_expressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCollection_type_expression(plsqlParser.Collection_type_expressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterExpression_list(plsqlParser.Expression_listContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -3723,6 +3771,42 @@ public class plsqlBaseListener implements plsqlListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterPreprocessor_reserved_words(plsqlParser.Preprocessor_reserved_wordsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitPreprocessor_reserved_words(plsqlParser.Preprocessor_reserved_wordsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterBoolean_static_expression(plsqlParser.Boolean_static_expressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBoolean_static_expression(plsqlParser.Boolean_static_expressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterPreprocessor_expression(plsqlParser.Preprocessor_expressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitPreprocessor_expression(plsqlParser.Preprocessor_expressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterSql_plus_command(plsqlParser.Sql_plus_commandContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -3778,6 +3862,18 @@ public class plsqlBaseListener implements plsqlListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitPrompt_command(plsqlParser.Prompt_commandContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterCall_sql_script_command(plsqlParser.Call_sql_script_commandContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCall_sql_script_command(plsqlParser.Call_sql_script_commandContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

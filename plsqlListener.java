@@ -77,6 +77,16 @@ public interface plsqlListener extends ParseTreeListener {
 	 */
 	void exitCreate_function_body(plsqlParser.Create_function_bodyContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link plsqlParser#function_spec}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunction_spec(plsqlParser.Function_specContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link plsqlParser#function_spec}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunction_spec(plsqlParser.Function_specContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link plsqlParser#parallel_enable_clause}.
 	 * @param ctx the parse tree
 	 */
@@ -187,26 +197,6 @@ public interface plsqlListener extends ParseTreeListener {
 	 */
 	void exitPackage_obj_spec(plsqlParser.Package_obj_specContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link plsqlParser#procedure_spec}.
-	 * @param ctx the parse tree
-	 */
-	void enterProcedure_spec(plsqlParser.Procedure_specContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link plsqlParser#procedure_spec}.
-	 * @param ctx the parse tree
-	 */
-	void exitProcedure_spec(plsqlParser.Procedure_specContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link plsqlParser#function_spec}.
-	 * @param ctx the parse tree
-	 */
-	void enterFunction_spec(plsqlParser.Function_specContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link plsqlParser#function_spec}.
-	 * @param ctx the parse tree
-	 */
-	void exitFunction_spec(plsqlParser.Function_specContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link plsqlParser#package_obj_body}.
 	 * @param ctx the parse tree
 	 */
@@ -246,6 +236,16 @@ public interface plsqlListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitCreate_procedure_body(plsqlParser.Create_procedure_bodyContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link plsqlParser#procedure_spec}.
+	 * @param ctx the parse tree
+	 */
+	void enterProcedure_spec(plsqlParser.Procedure_specContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link plsqlParser#procedure_spec}.
+	 * @param ctx the parse tree
+	 */
+	void exitProcedure_spec(plsqlParser.Procedure_specContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link plsqlParser#drop_trigger}.
 	 * @param ctx the parse tree
@@ -1377,6 +1377,16 @@ public interface plsqlListener extends ParseTreeListener {
 	 */
 	void exitBlock(plsqlParser.BlockContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link plsqlParser#pipe_row}.
+	 * @param ctx the parse tree
+	 */
+	void enterPipe_row(plsqlParser.Pipe_rowContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link plsqlParser#pipe_row}.
+	 * @param ctx the parse tree
+	 */
+	void exitPipe_row(plsqlParser.Pipe_rowContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link plsqlParser#sql_statement}.
 	 * @param ctx the parse tree
 	 */
@@ -2467,6 +2477,36 @@ public interface plsqlListener extends ParseTreeListener {
 	 */
 	void exitCursor_expression(plsqlParser.Cursor_expressionContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link plsqlParser#sql_cursor_expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterSql_cursor_expression(plsqlParser.Sql_cursor_expressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link plsqlParser#sql_cursor_expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitSql_cursor_expression(plsqlParser.Sql_cursor_expressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link plsqlParser#collection_type_functions}.
+	 * @param ctx the parse tree
+	 */
+	void enterCollection_type_functions(plsqlParser.Collection_type_functionsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link plsqlParser#collection_type_functions}.
+	 * @param ctx the parse tree
+	 */
+	void exitCollection_type_functions(plsqlParser.Collection_type_functionsContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link plsqlParser#collection_type_expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterCollection_type_expression(plsqlParser.Collection_type_expressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link plsqlParser#collection_type_expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitCollection_type_expression(plsqlParser.Collection_type_expressionContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link plsqlParser#expression_list}.
 	 * @param ctx the parse tree
 	 */
@@ -3097,6 +3137,36 @@ public interface plsqlListener extends ParseTreeListener {
 	 */
 	void exitXmlserialize_param_ident_part(plsqlParser.Xmlserialize_param_ident_partContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link plsqlParser#preprocessor_reserved_words}.
+	 * @param ctx the parse tree
+	 */
+	void enterPreprocessor_reserved_words(plsqlParser.Preprocessor_reserved_wordsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link plsqlParser#preprocessor_reserved_words}.
+	 * @param ctx the parse tree
+	 */
+	void exitPreprocessor_reserved_words(plsqlParser.Preprocessor_reserved_wordsContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link plsqlParser#boolean_static_expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterBoolean_static_expression(plsqlParser.Boolean_static_expressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link plsqlParser#boolean_static_expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitBoolean_static_expression(plsqlParser.Boolean_static_expressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link plsqlParser#preprocessor_expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterPreprocessor_expression(plsqlParser.Preprocessor_expressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link plsqlParser#preprocessor_expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitPreprocessor_expression(plsqlParser.Preprocessor_expressionContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link plsqlParser#sql_plus_command}.
 	 * @param ctx the parse tree
 	 */
@@ -3146,6 +3216,16 @@ public interface plsqlListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitPrompt_command(plsqlParser.Prompt_commandContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link plsqlParser#call_sql_script_command}.
+	 * @param ctx the parse tree
+	 */
+	void enterCall_sql_script_command(plsqlParser.Call_sql_script_commandContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link plsqlParser#call_sql_script_command}.
+	 * @param ctx the parse tree
+	 */
+	void exitCall_sql_script_command(plsqlParser.Call_sql_script_commandContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link plsqlParser#partition_extension_clause}.
 	 * @param ctx the parse tree
