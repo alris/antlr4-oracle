@@ -1218,7 +1218,7 @@ insert_into_clause
     ;
 
 values_clause
-    : VALUES expression_list
+    : VALUES (expression_list | record_name)
     ;
 
 // $>
