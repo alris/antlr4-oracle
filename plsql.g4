@@ -664,6 +664,7 @@ statement
     | case_statement/*[true]*/
     | sql_statement
     | function_call
+    | pipe_row
     ;
 
 assignment_statement
@@ -766,6 +767,10 @@ trigger_block
 
 block
     : DECLARE? declare_spec+ body
+    ;
+
+pipe_row
+    : PIPE ROW '(' variable_name ')'
     ;
 
 // $>
@@ -2843,6 +2848,7 @@ PERCENT_ROWTYPE:              '%' R O W T Y P E;
 PERCENT_TYPE:                 '%' T Y P E;
 PERCENT_NOTFOUND:             '%' N O T F O U N D;
 PIPELINED:                    P I P E L I N E D;
+PIPE:                         P I P E;
 PIVOT:                        P I V O T;
 PLAN:                         P L A N;
 PLS_INTEGER:                  P L S '_' I N T E G E R;
