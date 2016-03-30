@@ -1319,6 +1319,7 @@ seed_part
 // $<Expression & Condition
 cursor_expression
     : CURSOR '(' subquery ')'
+    | cursor_name PERCENT_NOTFOUND
     ;
 
 expression_list
@@ -1334,8 +1335,7 @@ condition_wrapper
     ;
 
 expression
-    : cursor_expression
-    | logical_and_expression ( OR logical_and_expression )*
+    : (cursor_expression | logical_and_expression) ( OR expression )*
     ;
 
 expression_wrapper
@@ -2358,6 +2358,7 @@ regular_id
     | PATH
     //| PERCENT_ROWTYPE
     //| PERCENT_TYPE
+    //| PERCENT_NOTFOUND
     | PIPELINED
     //| PIVOT
     | PLAN
@@ -2835,6 +2836,7 @@ PASSING:                      P A S S I N G;
 PATH:                         P A T H;
 PERCENT_ROWTYPE:              '%' R O W T Y P E;
 PERCENT_TYPE:                 '%' T Y P E;
+PERCENT_NOTFOUND:             '%' N O T F O U N D;
 PIPELINED:                    P I P E L I N E D;
 PIVOT:                        P I V O T;
 PLAN:                         P L A N;
