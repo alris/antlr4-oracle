@@ -1325,6 +1325,22 @@ seed_part
 cursor_expression
     : CURSOR '(' subquery ')'
     | cursor_name PERCENT_NOTFOUND
+    | cursor_name PERCENT_FOUND
+    | cursor_name PERCENT_ISOPEN
+    | sql_cursor_expression
+    ;
+
+// (SQL%...)
+sql_cursor_expression
+    : SQL_PERCENT_ROWCOUNT
+    ;
+
+collection_type_functions
+    : type_name '.' DELETE ';'
+    ;
+
+collection_type_expression
+    : type_name '.' EXISTS '(' expression ')'    
     ;
 
 expression_list
@@ -1340,7 +1356,7 @@ condition_wrapper
     ;
 
 expression
-    : (cursor_expression | logical_and_expression) ( OR expression )*
+    : (logical_and_expression) ( OR expression )*
     ;
 
 expression_wrapper
@@ -1359,8 +1375,9 @@ negated_expression
 equality_expression
     : multiset_expression (IS NOT?
       (NULL | NAN | PRESENT | INFINITE | A_LETTER SET | EMPTY | OF TYPE? '(' ONLY? type_spec (',' type_spec)* ')'))*
+    | cursor_expression
+    | collection_type_expression
     ;
-
 
 multiset_expression
     : relational_expression (multiset_type OF? concatenation)?
@@ -1698,6 +1715,29 @@ xmlserialize_param_ident_part
     : NO INDENT
     | INDENT (SIZE '=' concatenation_wrapper)?
     ;
+
+// alris preprocessor {
+// http://docs.oracle.com/cd/B19306_01/appdev.102/b14261/fundamentals.htm#LNPLS00210
+// Conditional Compilation Control Tokens
+
+PP_IF:      '$' I F;
+PP_THEN:    '$' T H E N;
+PP_ELSE:    '$' E L S E;
+PP_ELSIF:   '$' E L S I F;
+PP_END:     '$' E N D;
+PP_ERROR:   '$' E R R O R;
+
+preprocessor_reserved_words : PP_IF | PP_THEN | PP_ELSE | PP_ELSIF | PP_END | PP_ERROR;
+
+boolean_static_expression : expression; // simple expression
+
+preprocessor_expression
+    :   PP_IF boolean_static_expression PP_THEN sql_script?
+            ( PP_ELSIF boolean_static_expression PP_THEN sql_script? )?
+            ( PP_ELSE sql_script? )?
+        PP_END
+    ;
+// } preprocessor
     
 // SqlPlus
 
@@ -2366,8 +2406,10 @@ regular_id
     | PARTITION
     | PASSING
     | PATH
+    //| PERCENT_ISOPEN
     //| PERCENT_ROWTYPE
     //| PERCENT_TYPE
+    //| PERCENT_FOUND
     //| PERCENT_NOTFOUND
     | PIPELINED
     //| PIVOT
@@ -2446,6 +2488,7 @@ regular_id
     | SPECIFICATION
     | SQLDATA
     | SQLERROR
+    | SQL_PERCENT_ROWCOUNT // TODO: должен ли он быть здесь?
     | STANDALONE
     //| START
     | STARTUP
@@ -2844,8 +2887,10 @@ PARENT:                       P A R E N T;
 PARTITION:                    P A R T I T I O N;
 PASSING:                      P A S S I N G;
 PATH:                         P A T H;
+PERCENT_ISOPEN:               '%' I S O P E N;
 PERCENT_ROWTYPE:              '%' R O W T Y P E;
 PERCENT_TYPE:                 '%' T Y P E;
+PERCENT_FOUND:                '%' F O U N D;
 PERCENT_NOTFOUND:             '%' N O T F O U N D;
 PIPELINED:                    P I P E L I N E D;
 PIPE:                         P I P E;
@@ -2925,6 +2970,7 @@ SOME:                         S O M E;
 SPECIFICATION:                S P E C I F I C A T I O N;
 SQLDATA:                      S Q L D A T A;
 SQLERROR:                     S Q L E R R O R;
+SQL_PERCENT_ROWCOUNT:         S Q L '%' R O W C O U N T;
 STANDALONE:                   S T A N D A L O N E;
 START:                        S T A R T;
 STARTUP:                      S T A R T U P;
