@@ -3,7 +3,7 @@
  *
  * Copyright (c) 2009-2011 Alexandre Porcelli <alexandre.porcelli@gmail.com>
  * Copyright (c) 2015 Ivan Kochurkin (KvanTTT, kvanttt@gmail.com).
- * Copyright (c) 2016 Nikolay Baydyukov (Alris, alris.development@gmail.com).
+ * Copyright (c) 2016 Nickolay Baidyukov (Alris, alris.development@gmail.com).
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -75,9 +75,14 @@ alter_function
     ;
 
 create_function_body
-    : (CREATE (OR REPLACE)?)? FUNCTION function_name ('(' parameter (',' parameter)* ')')?
-      RETURN type_spec (invoker_rights_clause|parallel_enable_clause|result_cache_clause|DETERMINISTIC)*
-      ((PIPELINED? (IS | AS) (DECLARE? declare_spec* body | call_spec)) | (PIPELINED | AGGREGATE) USING implementation_type_name) ';'
+    : (CREATE (OR REPLACE)?)? function_spec
+    ;
+
+function_spec
+    : FUNCTION function_name ('(' parameter (',' parameter)* ')')?
+      RETURN type_spec (invoker_rights_clause|parallel_enable_clause|result_cache_clause|DETERMINISTIC|PIPELINED|AGGREGATE USING implementation_type_name)*
+      ((IS | AS) (DECLARE? declare_spec* body | call_spec))?
+      ';'
     ;
 
 // $<Creation Function - Specific Clauses
@@ -131,18 +136,11 @@ package_obj_spec
     | subtype_declaration
     | cursor_declaration
     | exception_declaration
+    | pragma_declaration
     | record_declaration
     | table_declaration
     | procedure_spec
     | function_spec
-    ;
-
-procedure_spec
-    : PROCEDURE procedure_name ('(' parameter ( ',' parameter )* ')')? ';' 
-    ;
-
-function_spec
-    : FUNCTION function_name ('(' parameter ( ',' parameter)* ')')? RETURN type_spec ';' 
     ;
 
 package_obj_body
@@ -150,6 +148,7 @@ package_obj_body
     | subtype_declaration 
     | cursor_declaration 
     | exception_declaration 
+    | pragma_declaration
     | record_declaration
     | table_declaration
     | create_procedure_body
@@ -167,9 +166,13 @@ alter_procedure
     ;
 
 create_procedure_body
-    : (CREATE (OR REPLACE)?)? PROCEDURE procedure_name ('(' parameter (',' parameter)* ')')? 
-      invoker_rights_clause? (IS | AS)
-      (DECLARE? declare_spec* body | call_spec | EXTERNAL) ';'
+    : (CREATE (OR REPLACE)?)? procedure_spec
+    ;
+
+procedure_spec
+    : PROCEDURE procedure_name ('(' parameter ( ',' parameter )* ')')? 
+    (invoker_rights_clause? (IS | AS) (DECLARE? declare_spec* body | call_spec | EXTERNAL))?
+    ';' 
     ;
 
 // $>
@@ -581,7 +584,7 @@ exception_declaration
 pragma_declaration
     : PRAGMA (SERIALLY_REUSABLE 
     | AUTONOMOUS_TRANSACTION
-    | EXCEPTION_INIT '(' exception_name ',' numeric ')'
+    | EXCEPTION_INIT '(' exception_name ',' MINUS_SIGN? numeric ')' // alris fix
     | INLINE '(' id1=id ',' expression ')'
     | RESTRICT_REFERENCES '(' (id | DEFAULT) (',' id)+ ')') ';'
     ;
@@ -645,6 +648,7 @@ statement
     | ALTER swallow_to_semi
     | GRANT swallow_to_semi
     | TRUNCATE swallow_to_semi
+    | PRAGMA swallow_to_semi
     | body
     | block
     | assignment_statement
@@ -1783,7 +1787,7 @@ routine_name
     ;
 
 package_name
-    : id
+    : (schema_name '.')? id // alris: должна быть схема, TODO: схема должна быть не в этом месте
     ;
 
 implementation_type_name
@@ -2829,8 +2833,8 @@ PARENT:                       P A R E N T;
 PARTITION:                    P A R T I T I O N;
 PASSING:                      P A S S I N G;
 PATH:                         P A T H;
-PERCENT_ROWTYPE:              '%' P E R C E N T '_' R O W T Y P E;
-PERCENT_TYPE:                 '%' P E R C E N T '_' T Y P E;
+PERCENT_ROWTYPE:              '%' R O W T Y P E;
+PERCENT_TYPE:                 '%' T Y P E;
 PIPELINED:                    P I P E L I N E D;
 PIVOT:                        P I V O T;
 PLAN:                         P L A N;
@@ -3139,19 +3143,19 @@ fragment QS_OTHER_CH: ~('<' | '{' | '[' | '(' | ' ' | '\t' | '\n' | '\r');
     (. { _input.La(-1) != delimeter }? )* QS_OTHER_CH QUOTE;*/
 /*fragment QS_OTHER
 //    For C target we have to preserve case sensitivity.
-//		@declarations {
-//    		ANTLR3_UINT32 (*oldLA)(struct ANTLR3_INT_STREAM_struct *, ANTLR3_INT32);
-//		}
-//		@init {
-//			oldLA = INPUT->istream->_LA;
+//      @declarations {
+//          ANTLR3_UINT32 (*oldLA)(struct ANTLR3_INT_STREAM_struct *, ANTLR3_INT32);
+//      }
+//      @init {
+//          oldLA = INPUT->istream->_LA;
 //            INPUT->setUcaseLA(INPUT, ANTLR3_FALSE);
-//		}
-		:
-		QUOTE delimiter=QS_OTHER_CH
+//      }
+        :
+        QUOTE delimiter=QS_OTHER_CH
 // JAVA Syntax 
     ( { input.LT(1) != $delimiter.text.charAt(0) || ( input.LT(1) == $delimiter.text.charAt(0) && input.LT(2) != '\'') }? => . )*
     ( { input.LT(1) == $delimiter.text.charAt(0) && input.LT(2) == '\'' }? => . ) QUOTE
-		;*/
+        ;*/
 
 //{ Rule #163 <DELIMITED_ID>
 DELIMITED_ID
@@ -3335,8 +3339,8 @@ MULTI_LINE_COMMENT: '/*' .*? '*/' -> channel(HIDDEN);
 // SQL*Plus prompt
 // TODO should be grammar rule, but tricky to implement
 PROMPT
-	: 'prompt' SPACE ( ~('\r' | '\n') )* (NEWLINE|EOF)
-	;
+    : 'prompt' SPACE ( ~('\r' | '\n') )* (NEWLINE|EOF)
+    ;
 
 //{ Rule #360 <NEWLINE>
 fragment
