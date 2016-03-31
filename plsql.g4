@@ -28,7 +28,7 @@ compilation_unit
     ;
 
 sql_script
-    : (unit_statement | sql_plus_command)* EOF
+    : (unit_statement | sql_plus_command | preprocessor_statement)* EOF
     ;
 
 unit_statement
@@ -60,6 +60,7 @@ unit_statement
     | drop_trigger
     | drop_type
     | data_manipulation_language_statements
+    | block ';' // DECLARE .. BEGIN ... END; /
     ;
 
 // $<DDL -> SQL Statements for Stored PL/SQL Units
@@ -141,6 +142,7 @@ package_obj_spec
     | table_declaration
     | procedure_spec
     | function_spec
+    | preprocessor_statement
     ;
 
 package_obj_body
@@ -153,6 +155,7 @@ package_obj_body
     | table_declaration
     | create_procedure_body
     | create_function_body 
+    | preprocessor_statement
     ;
 
 // $<Procedure DDLs
@@ -557,6 +560,7 @@ declare_spec
     | table_declaration
     | create_procedure_body
     | create_function_body
+    | preprocessor_statement
     ;
 
 //incorporates constant_declaration
@@ -636,7 +640,7 @@ table_var_dec
 // $<PL/SQL Statements
 
 seq_of_statements
-    : (statement (';' | EOF) | label_declaration)+
+    : (statement (';' | EOF) | label_declaration | preprocessor_statement)+
     ;
 
 label_declaration
@@ -665,6 +669,7 @@ statement
     | sql_statement
     | function_call
     | pipe_row
+    | collection_statement
     ;
 
 assignment_statement
@@ -749,6 +754,18 @@ body
     : BEGIN seq_of_statements exception_clause? END label_name?
     ;
 
+collection_statement
+    : type_name '.' FIRST
+    | type_name '.' LAST
+    | type_name '.' DELETE ( '(' expression (',' expression )? ')' )?
+    | type_name '.' EXTEND ( '(' numeric (',' numeric )? ')' )?
+    | type_name '.' TRIM ( '(' numeric ')' )?
+    ;
+
+pipe_row
+    : PIPE ROW '(' variable_name ')'
+    ;
+
 // $<Body - Specific Clause
 
 exception_clause
@@ -767,10 +784,6 @@ trigger_block
 
 block
     : DECLARE? declare_spec+ body
-    ;
-
-pipe_row
-    : PIPE ROW '(' variable_name ')'
     ;
 
 // $>
@@ -827,7 +840,7 @@ open_statement
     ;
 
 fetch_statement
-    : FETCH cursor_name (it1=INTO variable_name (',' variable_name )* | BULK COLLECT INTO variable_name (',' variable_name )*)
+    : FETCH cursor_name (it1=INTO variable_name (',' variable_name )* | BULK COLLECT INTO variable_name (',' variable_name )* LIMIT variable_name | numeric)
     ;
 
 open_for_statement
@@ -1335,12 +1348,12 @@ sql_cursor_expression
     : SQL_PERCENT_ROWCOUNT
     ;
 
-collection_type_functions
-    : type_name '.' DELETE ';'
-    ;
-
 collection_type_expression
-    : type_name '.' EXISTS '(' expression ')'    
+    : type_name '.' EXISTS '(' expression ')' // дл€ ассоциативных массивов может быть строка
+    | type_name '.' PRIOR '(' numeric ')'
+    | type_name '.' NEXT '(' numeric ')'
+    | type_name '.' COUNT
+    | type_name '.' LIMIT
     ;
 
 expression_list
@@ -1727,14 +1740,15 @@ PP_ELSIF:   '$' E L S I F;
 PP_END:     '$' E N D;
 PP_ERROR:   '$' E R R O R;
 
-preprocessor_reserved_words : PP_IF | PP_THEN | PP_ELSE | PP_ELSIF | PP_END | PP_ERROR;
+//preprocessor_reserved_words : PP_IF | PP_THEN | PP_ELSE | PP_ELSIF | PP_END | PP_ERROR;
 
-boolean_static_expression : expression; // simple expression
+boolean_static_expression : expression; // simple condition
+preprocessor_internal_statement : declare_spec+ | seq_of_statements | sql_script;
 
-preprocessor_expression
-    :   PP_IF boolean_static_expression PP_THEN sql_script?
-            ( PP_ELSIF boolean_static_expression PP_THEN sql_script? )?
-            ( PP_ELSE sql_script? )?
+preprocessor_statement
+    :   PP_IF boolean_static_expression PP_THEN preprocessor_internal_statement?
+            ( PP_ELSIF boolean_static_expression PP_THEN preprocessor_internal_statement? )*
+            ( PP_ELSE preprocessor_internal_statement? )?
         PP_END
     ;
 // } preprocessor
@@ -2743,6 +2757,7 @@ EXISTS:                       E X I S T S;
 EXIT:                         E X I T;
 EXPLAIN:                      E X P L A I N;
 EXTERNAL:                     E X T E R N A L;
+EXTEND:                       E X T E N D;
 EXTRACT:                      E X T R A C T;
 FAILURE:                      F A I L U R E;
 FALSE:                        F A L S E;
@@ -2844,6 +2859,7 @@ NCHAR_CS:                     N C H A R '_' C S;
 NCLOB:                        N C L O B;
 NESTED:                       N E S T E D;
 NEW:                          N E W;
+NEXT:                         N E X T;
 NO:                           N O;
 NOAUDIT:                      N O A U D I T;
 NOCACHE:                      N O C A C H E;
