@@ -6,4 +6,10 @@ To build java files and classes use:
 ./build-antlr4.sh
 
 To analyze files use:
-./analyze.sh [-tokens] [-gui] <files>
+./analyze.sh [-tokens] [-gui] < files >
+
+Interesting:
+https://habrahabr.ru/post/259691/
+http://docs.oracle.com/cd/B19306_01/appdev.102/b14261/fundamentals.htm#LNPLS00210
+http://stackoverflow.com/questions/14565794/antlr-4-tree-inject-rewrite-operator
+http://www.antlr.org/api/Java/org/antlr/v4/runtime/TokenStreamRewriter.html

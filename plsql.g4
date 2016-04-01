@@ -755,11 +755,11 @@ body
     ;
 
 collection_statement
-    : type_name '.' FIRST
-    | type_name '.' LAST
-    | type_name '.' DELETE ( '(' expression (',' expression )? ')' )?
-    | type_name '.' EXTEND ( '(' numeric (',' numeric )? ')' )?
-    | type_name '.' TRIM ( '(' numeric ')' )?
+    : collection_name '.' FIRST
+    | collection_name '.' LAST
+    | collection_name '.' DELETE ( '(' expression (',' expression )? ')' )?
+    | collection_name '.' EXTEND ( '(' numeric (',' numeric )? ')' )?
+    | collection_name '.' TRIM ( '(' numeric ')' )?
     ;
 
 pipe_row
@@ -958,6 +958,7 @@ query_block
       group_by_clause? 
       order_by_clause? 
       model_clause?
+      ';'?
     ;
 
 selected_element
@@ -1355,11 +1356,12 @@ sql_cursor_expression
     ;
 
 collection_type_expression
-    : type_name '.' EXISTS '(' expression ')' // для ассоциативных массивов может быть строка
-    | type_name '.' PRIOR '(' numeric ')'
-    | type_name '.' NEXT '(' numeric ')'
-    | type_name '.' COUNT
-    | type_name '.' LIMIT
+    : collection_name '.' EXISTS '(' expression ')' // для ассоциативных массивов может быть строка
+    | collection_name '.' '(' expression ')' // ассоциативные массивы
+    | collection_name '.' PRIOR '(' numeric ')'
+    | collection_name '.' NEXT '(' numeric ')'
+    | collection_name '.' COUNT
+    | collection_name '.' LIMIT
     ;
 
 expression_list
