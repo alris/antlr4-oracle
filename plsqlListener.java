@@ -2897,6 +2897,26 @@ public interface plsqlListener extends ParseTreeListener {
 	 */
 	void exitQuantified_expression(plsqlParser.Quantified_expressionContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link plsqlParser#plsql_type_conversion}.
+	 * @param ctx the parse tree
+	 */
+	void enterPlsql_type_conversion(plsqlParser.Plsql_type_conversionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link plsqlParser#plsql_type_conversion}.
+	 * @param ctx the parse tree
+	 */
+	void exitPlsql_type_conversion(plsqlParser.Plsql_type_conversionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link plsqlParser#sql_type_conversion}.
+	 * @param ctx the parse tree
+	 */
+	void enterSql_type_conversion(plsqlParser.Sql_type_conversionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link plsqlParser#sql_type_conversion}.
+	 * @param ctx the parse tree
+	 */
+	void exitSql_type_conversion(plsqlParser.Sql_type_conversionContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link plsqlParser#standard_function}.
 	 * @param ctx the parse tree
 	 */

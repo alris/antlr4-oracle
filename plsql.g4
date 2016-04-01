@@ -1563,11 +1563,21 @@ quantified_expression
     : (SOME | EXISTS | ALL | ANY) ('(' subquery ')' | '(' expression_wrapper ')')
     ;
 
+plsql_type_conversion
+    : TO_CHAR '(' expression ')'
+    | TO_NUMBER '(' expression ')'
+    ;
+
+sql_type_conversion
+    : (CAST | XMLCAST) '(' (MULTISET '(' subquery ')' | concatenation_wrapper) AS type_spec ')'
+    | plsql_type_conversion
+    ;
+
 standard_function
     : over_clause_keyword function_argument_analytic over_clause?
     | /*TODO stantard_function_enabling_using*/ regular_id function_argument_modeling using_clause?
     | COUNT '(' ( '*' | (DISTINCT | UNIQUE | ALL)? concatenation_wrapper) ')' over_clause?
-    | (CAST | XMLCAST) '(' (MULTISET '(' subquery ')' | concatenation_wrapper) AS type_spec ')'
+    | sql_type_conversion
     | CHR '(' concatenation_wrapper USING NCHAR_CS ')'
     | COLLECT '(' (DISTINCT | UNIQUE)? concatenation_wrapper collect_order_by_part? ')'
     | within_or_over_clause_keyword function_argument within_or_over_part+
@@ -3022,6 +3032,8 @@ TIMEZONE_HOUR:                T I M E Z O N E '_' H O U R;
 TIMEZONE_MINUTE:              T I M E Z O N E '_' M I N U T E;
 TIMEZONE_REGION:              T I M E Z O N E '_' R E G I O N;
 TO:                           T O;
+TO_CHAR:                      T O '_' C H A R;
+TO_NUMBER:                    T O '_' N U M B E R;
 TRAILING:                     T R A I L I N G;
 TRANSACTION:                  T R A N S A C T I O N;
 TRANSLATE:                    T R A N S L A T E;

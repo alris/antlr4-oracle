@@ -3483,6 +3483,30 @@ public class plsqlBaseListener implements plsqlListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterPlsql_type_conversion(plsqlParser.Plsql_type_conversionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitPlsql_type_conversion(plsqlParser.Plsql_type_conversionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterSql_type_conversion(plsqlParser.Sql_type_conversionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSql_type_conversion(plsqlParser.Sql_type_conversionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterStandard_function(plsqlParser.Standard_functionContext ctx) { }
 	/**
 	 * {@inheritDoc}
