@@ -1238,7 +1238,7 @@ insert_into_clause
     ;
 
 values_clause
-    : VALUES (expression_list | record_name)
+    : VALUES (expression_list | record_name | collection_assoc_expression)
     ;
 
 // $>
@@ -1355,9 +1355,13 @@ sql_cursor_expression
     : SQL_PERCENT_ROWCOUNT
     ;
 
+collection_assoc_expression
+    : collection_name '(' expression ')' // ассоциативные массивы
+    ;
+
 collection_type_expression
     : collection_name '.' EXISTS '(' expression ')' // для ассоциативных массивов может быть строка
-    | collection_name '.' '(' expression ')' // ассоциативные массивы
+    | collection_assoc_expression
     | collection_name '.' PRIOR '(' numeric ')'
     | collection_name '.' NEXT '(' numeric ')'
     | collection_name '.' COUNT
@@ -1564,8 +1568,8 @@ quantified_expression
     ;
 
 plsql_type_conversion
-    : TO_CHAR '(' expression ')'
-    | TO_NUMBER '(' expression ')'
+    : TO_CHAR '(' expression (',' expression)* ')'
+    | TO_NUMBER '(' expression (',' expression)* ')'
     ;
 
 sql_type_conversion
@@ -1826,8 +1830,13 @@ current_of_clause
     : CURRENT OF cursor_name
     ;
 
+into_clause_variable
+    : variable_name 
+    | collection_assoc_expression
+    ;
+
 into_clause
-    : INTO variable_name (',' variable_name)* 
+    : INTO into_clause_variable (',' into_clause_variable)* 
     | BULK COLLECT INTO variable_name (',' variable_name)* 
     ;
 

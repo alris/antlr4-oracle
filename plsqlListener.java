@@ -2497,6 +2497,16 @@ public interface plsqlListener extends ParseTreeListener {
 	 */
 	void exitSql_cursor_expression(plsqlParser.Sql_cursor_expressionContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link plsqlParser#collection_assoc_expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterCollection_assoc_expression(plsqlParser.Collection_assoc_expressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link plsqlParser#collection_assoc_expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitCollection_assoc_expression(plsqlParser.Collection_assoc_expressionContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link plsqlParser#collection_type_expression}.
 	 * @param ctx the parse tree
 	 */
@@ -3306,6 +3316,16 @@ public interface plsqlListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitCurrent_of_clause(plsqlParser.Current_of_clauseContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link plsqlParser#into_clause_variable}.
+	 * @param ctx the parse tree
+	 */
+	void enterInto_clause_variable(plsqlParser.Into_clause_variableContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link plsqlParser#into_clause_variable}.
+	 * @param ctx the parse tree
+	 */
+	void exitInto_clause_variable(plsqlParser.Into_clause_variableContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link plsqlParser#into_clause}.
 	 * @param ctx the parse tree

@@ -3003,6 +3003,18 @@ public class plsqlBaseListener implements plsqlListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterCollection_assoc_expression(plsqlParser.Collection_assoc_expressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitCollection_assoc_expression(plsqlParser.Collection_assoc_expressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterCollection_type_expression(plsqlParser.Collection_type_expressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -3970,6 +3982,18 @@ public class plsqlBaseListener implements plsqlListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitCurrent_of_clause(plsqlParser.Current_of_clauseContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterInto_clause_variable(plsqlParser.Into_clause_variableContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitInto_clause_variable(plsqlParser.Into_clause_variableContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
