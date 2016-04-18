@@ -125,7 +125,7 @@ create_package
 // $<Create Package - Specific Clauses
 
 package_body
-    : BODY package_name (IS | AS) package_obj_body* (BEGIN seq_of_statements | END package_name?)
+    : BODY package_name (IS | AS) package_obj_body* (BEGIN seq_of_statements)? END package_name?
     ;
 
 package_spec
