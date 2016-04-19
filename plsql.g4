@@ -19,6 +19,10 @@
  */
 grammar plsql;
 
+@header {
+package org.antlr.generated;
+}
+
 swallow_to_semi
     : ~( ';' )+
     ;
