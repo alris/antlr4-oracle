@@ -17,7 +17,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-grammar plsql;
+grammar PlSql;
 
 @header {
 package org.antlr.generated;
@@ -64,7 +64,7 @@ unit_statement
     | drop_trigger
     | drop_type
     | data_manipulation_language_statements
-    | block ';' // DECLARE .. BEGIN ... END; /
+    | block ';' '/' // DECLARE .. BEGIN ... END; /
     ;
 
 // $<DDL -> SQL Statements for Stored PL/SQL Units
@@ -644,7 +644,7 @@ table_var_dec
 // $<PL/SQL Statements
 
 seq_of_statements
-    : (statement (';' | EOF) | label_declaration | preprocessor_statement)+
+    : (statement ';' | label_declaration | preprocessor_statement)+
     ;
 
 label_declaration
