@@ -67,6 +67,18 @@ unit_statement
     | block ';' '/' // DECLARE .. BEGIN ... END; /
     ;
 
+// Alris: чтобы в парсере перехватывать начало блока определений
+// pl/sql block
+declare_wrapper
+    : DECLARE?
+    ;
+
+// Alris: чтобы в парсере перехватывать начало блока определений
+// funcrion, procedure, package
+is_or_as
+    : (IS | AS)
+    ;
+
 // $<DDL -> SQL Statements for Stored PL/SQL Units
 
 // $<Function DDLs
@@ -86,7 +98,7 @@ create_function_body
 function_spec
     : FUNCTION function_name ('(' parameter (',' parameter)* ')')?
       RETURN type_spec (invoker_rights_clause|parallel_enable_clause|result_cache_clause|DETERMINISTIC|PIPELINED|AGGREGATE USING implementation_type_name)*
-      ((IS | AS) (DECLARE? declare_spec* body | call_spec))?
+      (is_or_as (declare_wrapper declare_spec* body | call_spec))?
       ';'
     ;
 
@@ -123,17 +135,17 @@ alter_package
     ;
 
 create_package
-    : CREATE (OR REPLACE)? PACKAGE (package_spec | package_body)? ';'
+    : CREATE (OR REPLACE)? PACKAGE (package_spec | package_body)? ';' '/'
     ;
 
 // $<Create Package - Specific Clauses
 
 package_body
-    : BODY package_name (IS | AS) package_obj_body* (BEGIN seq_of_statements)? END package_name?
+    : BODY package_name is_or_as package_obj_body* (BEGIN seq_of_statements)? END package_name?
     ;
 
 package_spec
-    : package_name invoker_rights_clause? (IS | AS) package_obj_spec* END package_name?
+    : package_name invoker_rights_clause? is_or_as package_obj_spec* END package_name?
     ;
 
 package_obj_spec
@@ -178,7 +190,7 @@ create_procedure_body
 
 procedure_spec
     : PROCEDURE procedure_name ('(' parameter ( ',' parameter )* ')')? 
-    (invoker_rights_clause? (IS | AS) (DECLARE? declare_spec* body | call_spec | EXTERNAL))?
+    (invoker_rights_clause? is_or_as (declare_wrapper declare_spec* body | call_spec | EXTERNAL))?
     ';' 
     ;
 
@@ -367,7 +379,7 @@ object_type_def
     ;
 
 object_as_part
-    : (IS | AS) (OBJECT | varray_type_def | nested_table_type_def)
+    : is_or_as (OBJECT | varray_type_def | nested_table_type_def)
     ;
 
 object_under_part
@@ -383,7 +395,7 @@ sqlj_object_type
     ;
 
 type_body
-    : BODY type_name (IS | AS) type_body_elements (',' type_body_elements)* END
+    : BODY type_name is_or_as type_body_elements (',' type_body_elements)* END
     ;
 
 type_body_elements
@@ -401,18 +413,18 @@ subprog_decl_in_type
 
 proc_decl_in_type
     : PROCEDURE procedure_name '(' type_elements_parameter (',' type_elements_parameter)* ')' 
-      (IS | AS) (call_spec | DECLARE? declare_spec* body ';')
+      is_or_as (call_spec | declare_wrapper declare_spec* body ';')
     ;
 
 func_decl_in_type
     : FUNCTION function_name ('(' type_elements_parameter (',' type_elements_parameter)* ')')? 
-      RETURN type_spec (IS | AS) (call_spec | DECLARE? declare_spec* body ';')
+      RETURN type_spec is_or_as (call_spec | declare_wrapper declare_spec* body ';')
     ;
 
 constructor_declaration
     : FINAL? INSTANTIABLE? CONSTRUCTOR FUNCTION type_spec
       ('(' (SELF IN OUT type_spec ',') type_elements_parameter (',' type_elements_parameter)*  ')')?
-      RETURN SELF AS RESULT (IS | AS) (call_spec | DECLARE? declare_spec* body ';')
+      RETURN SELF AS RESULT is_or_as (call_spec | declare_wrapper declare_spec* body ';')
     ;
 
 // $>
@@ -447,16 +459,16 @@ subprogram_spec
     ;
 
 type_procedure_spec
-    : PROCEDURE procedure_name '(' type_elements_parameter (',' type_elements_parameter)* ')' ((IS | AS) call_spec)?
+    : PROCEDURE procedure_name '(' type_elements_parameter (',' type_elements_parameter)* ')' (is_or_as call_spec)?
     ;
 
 type_function_spec
     : FUNCTION function_name ('(' type_elements_parameter (',' type_elements_parameter)* ')')?
-      RETURN (type_spec | SELF AS RESULT) ((IS | AS) call_spec | EXTERNAL VARIABLE? NAME expression)?
+      RETURN (type_spec | SELF AS RESULT) (is_or_as call_spec | EXTERNAL VARIABLE? NAME expression)?
     ;
 
 constructor_spec
-    : FINAL? INSTANTIABLE? CONSTRUCTOR FUNCTION type_spec ('(' (SELF IN OUT type_spec ',') type_elements_parameter (',' type_elements_parameter)*  ')')?  RETURN SELF AS RESULT ((IS | AS) call_spec)?
+    : FINAL? INSTANTIABLE? CONSTRUCTOR FUNCTION type_spec ('(' (SELF IN OUT type_spec ',') type_elements_parameter (',' type_elements_parameter)*  ')')?  RETURN SELF AS RESULT (is_or_as call_spec)?
     ;
 
 map_order_function_spec
@@ -592,7 +604,7 @@ exception_declaration
 pragma_declaration
     : PRAGMA (SERIALLY_REUSABLE 
     | AUTONOMOUS_TRANSACTION
-    | EXCEPTION_INIT '(' exception_name ',' MINUS_SIGN? numeric ')' // alris fix
+    | EXCEPTION_INIT '(' exception_name ',' MINUS_SIGN? numeric ')' // Alris fix
     | INLINE '(' id1=id ',' expression ')'
     | RESTRICT_REFERENCES '(' (id | DEFAULT) (',' id)+ ')') ';'
     ;
@@ -783,11 +795,11 @@ exception_handler
 // $>
 
 trigger_block
-    : (DECLARE? declare_spec+)? body
+    : (declare_wrapper declare_spec+)? body
     ;
 
 block
-    : DECLARE? declare_spec+ body
+    : declare_wrapper declare_spec+ body
     ;
 
 // $>
@@ -1755,7 +1767,7 @@ xmlserialize_param_ident_part
     | INDENT (SIZE '=' concatenation_wrapper)?
     ;
 
-// alris preprocessor {
+// Alris: preprocessor {
 // http://docs.oracle.com/cd/B19306_01/appdev.102/b14261/fundamentals.htm#LNPLS00210
 // Conditional Compilation Control Tokens
 
@@ -1798,7 +1810,7 @@ exit_command
     : EXIT 
     ;
 
-// alris fix
+// Alris: fix
 prompt_command
     : SQLPLUS_PROMPT
     ;
@@ -1882,7 +1894,7 @@ routine_name
     ;
 
 package_name
-    : (schema_name '.')? id // alris: должна быть схема, TODO: схема должна быть не в этом месте
+    : (schema_name '.')? id // Alris: должна быть схема, TODO: схема должна быть не в этом месте
     ;
 
 implementation_type_name
@@ -3010,7 +3022,7 @@ SIGNTYPE:                     S I G N T Y P E;
 SIMPLE_INTEGER:               S I M P L E '_' I N T E G E R;
 SINGLE:                       S I N G L E;
 SIZE:                         S I Z E;
-SKIP_:                        S K I P; // alris: added _ (cannot declare a rule with reserved name SKIP)
+SKIP_:                        S K I P; // Alris: added _ (cannot declare a rule with reserved name SKIP)
 SMALLINT:                     S M A L L I N T;
 SNAPSHOT:                     S N A P S H O T;
 SOME:                         S O M E;
@@ -3417,7 +3429,9 @@ INTRODUCER
 //}
 
 SPACES
-    : [ \t\r\n]+ -> skip
+    // Alris: для TokenStreamRewriter важны пробелы, чтобы потом правильно выводить текст
+    // : [ \t\r\n]+ -> skip 
+    : [ \t\r\n]+ -> channel(HIDDEN)
     ;
     
 //{ Rule #504 <SIMPLE_LETTER> - simple_latin _letter was generalised into SIMPLE_LETTER
@@ -3452,7 +3466,7 @@ MULTI_LINE_COMMENT: '/*' .*? '*/' -> channel(HIDDEN);
 //     : 'prompt' SPACE ( ~('\r' | '\n') )* (NEWLINE|EOF)
 //     ;
 
-// alris fix
+// Alris: fix
 SQLPLUS_PROMPT: PROMPT SPACE ( ~('\r' | '\n') )* (NEWLINE|EOF);
 
 SQLPLUS_CALLSCRIPT: AT_SIGN ( ~('\r' | '\n') )* (NEWLINE|EOF);
