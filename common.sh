@@ -2,6 +2,7 @@
 
 ###############################################################################
 grammar=PlSql.g4
+src_path=src/Antlr4ParserLexer/src/org/antlr/generated
 grammar_class=org.antlr.generated.PlSql
 start_rule=sql_script
 ###############################################################################
