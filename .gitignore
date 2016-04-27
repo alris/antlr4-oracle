@@ -2,3 +2,5 @@ internal_*/*
 *.class
 *.log
 .metadata/*
+bin/
+*.properties
