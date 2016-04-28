@@ -689,7 +689,7 @@ statement
     ;
 
 assignment_statement
-    : (general_element | bind_variable) ASSIGN_OP expression
+    : (collection_assoc_expression | general_element | bind_variable) ASSIGN_OP expression
     ;
 
 continue_statement
@@ -771,11 +771,9 @@ body
     ;
 
 collection_statement
-    : collection_name '.' FIRST
-    | collection_name '.' LAST
-    | collection_name '.' DELETE ( '(' expression (',' expression )? ')' )?
-    | collection_name '.' EXTEND ( '(' numeric (',' numeric )? ')' )?
-    | collection_name '.' TRIM ( '(' numeric ')' )?
+    : collection_assoc_expression '.' DELETE ( '(' (expression (',' expression )?)? ')' )?
+    | collection_assoc_expression '.' EXTEND ( '(' (expression (',' expression )?)? ')' )?
+    | collection_assoc_expression '.' TRIM ( '(' expression? ')' )?
     ;
 
 pipe_row
@@ -1372,16 +1370,18 @@ sql_cursor_expression
     ;
 
 collection_assoc_expression
-    : collection_name '(' expression ')' // ассоциативные массивы
+    : collection_name ('(' expression ')')* // ассоциативные массивы
     ;
 
 collection_type_expression
-    : collection_name '.' EXISTS '(' expression ')' // для ассоциативных массивов может быть строка
-    | collection_assoc_expression
-    | collection_name '.' PRIOR '(' expression ')'
-    | collection_name '.' NEXT '(' expression ')'
-    | collection_name '.' COUNT
-    | collection_name '.' LIMIT
+    : collection_assoc_expression
+    | collection_assoc_expression '.' FIRST
+    | collection_assoc_expression '.' LAST
+    | collection_assoc_expression '.' EXISTS '(' expression ')' // для ассоциативных массивов может быть строка
+    | collection_assoc_expression '.' PRIOR '(' expression ')'
+    | collection_assoc_expression '.' NEXT '(' expression ')'
+    | collection_assoc_expression '.' COUNT
+    | collection_assoc_expression '.' LIMIT
     ;
 
 expression_list
@@ -1572,6 +1572,7 @@ atom
     | constant
     | general_element
     | '(' (subquery ')' subquery_operation_part* | expression_or_vector ')')
+    | collection_type_expression
     ;
 
 expression_or_vector
