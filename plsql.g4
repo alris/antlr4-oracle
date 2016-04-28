@@ -1378,8 +1378,8 @@ collection_assoc_expression
 collection_type_expression
     : collection_name '.' EXISTS '(' expression ')' // дл€ ассоциативных массивов может быть строка
     | collection_assoc_expression
-    | collection_name '.' PRIOR '(' numeric ')'
-    | collection_name '.' NEXT '(' numeric ')'
+    | collection_name '.' PRIOR '(' expression ')'
+    | collection_name '.' NEXT '(' expression ')'
     | collection_name '.' COUNT
     | collection_name '.' LIMIT
     ;
@@ -1422,8 +1422,8 @@ equality_expression
 
 multiset_expression
     : (collection_name | collection_assoc_expression) 
-      MULTISET (EXCEPT | INTERSECT | UNION) (ALL | DISTINCT)? 
-      (collection_name | collection_assoc_expression)
+      (MULTISET (EXCEPT | INTERSECT | UNION) (ALL | DISTINCT)? 
+      (collection_name | collection_assoc_expression))*
     | (relational_expression (NOT? multiset_type OF? concatenation)?)
     ;
 
@@ -1478,7 +1478,7 @@ additive_expression
     ;
 
 multiply_expression
-    : datetime_expression (('*' | '/') datetime_expression)*
+    : datetime_expression (('*' | '/' | MOD) datetime_expression)*
     ;
 
 datetime_expression
@@ -1609,6 +1609,7 @@ standard_function
     | (FIRST_VALUE | LAST_VALUE) function_argument_analytic respect_or_ignore_nulls? over_clause
     | standard_prediction_function_keyword 
       '(' expression_wrapper (',' expression_wrapper)* cost_matrix_clause? using_clause? ')'
+    | MOD '(' expression ',' expression ')'
     | TRANSLATE '(' expression_wrapper (USING (CHAR_CS | NCHAR_CS))? (',' expression_wrapper)* ')'
     | TREAT '(' expression_wrapper AS REF? type_spec ')'
     | TRIM '(' ((LEADING | TRAILING | BOTH)? quoted_string? FROM)? concatenation_wrapper ')'
@@ -2892,6 +2893,7 @@ MINUS:                        M I N U S;
 MINUTE:                       M I N U T E;
 MINVALUE:                     M I N V A L U E;
 MLSLABEL:                     M L S L A B E L;
+MOD:                          M O D;
 MODE:                         M O D E;
 MODEL:                        M O D E L;
 MODIFY:                       M O D I F Y;
