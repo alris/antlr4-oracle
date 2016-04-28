@@ -2620,6 +2620,16 @@ public interface PlSqlListener extends ParseTreeListener {
 	 */
 	void exitEquality_expression(PlSqlParser.Equality_expressionContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link PlSqlParser#multiset_part}.
+	 * @param ctx the parse tree
+	 */
+	void enterMultiset_part(PlSqlParser.Multiset_partContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link PlSqlParser#multiset_part}.
+	 * @param ctx the parse tree
+	 */
+	void exitMultiset_part(PlSqlParser.Multiset_partContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link PlSqlParser#multiset_expression}.
 	 * @param ctx the parse tree
 	 */

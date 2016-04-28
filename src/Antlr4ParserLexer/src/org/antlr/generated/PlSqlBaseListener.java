@@ -3150,6 +3150,18 @@ public class PlSqlBaseListener implements PlSqlListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterMultiset_part(PlSqlParser.Multiset_partContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMultiset_part(PlSqlParser.Multiset_partContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterMultiset_expression(PlSqlParser.Multiset_expressionContext ctx) { }
 	/**
 	 * {@inheritDoc}

@@ -141,7 +141,7 @@ create_package
 // $<Create Package - Specific Clauses
 
 package_body
-    : BODY package_name is_or_as package_obj_body* (BEGIN seq_of_statements)? END package_name?
+    : BODY package_name is_or_as package_obj_body* (BEGIN seq_of_statements)? exception_clause? END package_name?
     ;
 
 package_spec
@@ -777,7 +777,7 @@ collection_statement
     ;
 
 pipe_row
-    : PIPE ROW '(' variable_name ')'
+    : PIPE ROW '(' expression ')'
     ;
 
 // $<Body - Specific Clause
@@ -797,7 +797,7 @@ trigger_block
     ;
 
 block
-    : declare_wrapper declare_spec+ body
+    : (declare_wrapper declare_spec+)? body
     ;
 
 // $>
@@ -1420,10 +1420,16 @@ equality_expression
     | collection_type_expression
     ;
 
+multiset_part
+    : collection_name 
+    | collection_assoc_expression 
+    | function_call
+    ;
+
 multiset_expression
-    : (collection_name | collection_assoc_expression) 
+    : multiset_part
       (MULTISET (EXCEPT | INTERSECT | UNION) (ALL | DISTINCT)? 
-      (collection_name | collection_assoc_expression))*
+      multiset_part)+
     | (relational_expression (NOT? multiset_type OF? concatenation)?)
     ;
 
@@ -2026,7 +2032,7 @@ respect_or_ignore_nulls
     ;
 
 argument
-    : (id '=' '>')? expression_wrapper
+    : (id ASSOCIATION_OPERATOR)? expression_wrapper
     ;
 
 type_spec
@@ -2229,7 +2235,7 @@ regular_id
     // | BY
     | BYTE
     | C_LETTER
-    // | CACHE
+    | CACHE
     | CALL
     | CANONICAL
     | CASCADE
@@ -2290,7 +2296,7 @@ regular_id
     | DEFAULTS
     | DEFERRED
     | DEFINER
-    // | DELETE
+    | DELETE
     // | DEPTH
     //| DESC
     | DETERMINISTIC
@@ -2686,6 +2692,7 @@ ARRAY:                        A R R A Y;
 AS:                           A S;
 ASC:                          A S C;
 ASSOCIATE:                    A S S O C I A T E;
+ASSOCIATION_OPERATOR:         '=>';
 AT:                           A T;
 ATTRIBUTE:                    A T T R I B U T E;
 AUDIT:                        A U D I T;

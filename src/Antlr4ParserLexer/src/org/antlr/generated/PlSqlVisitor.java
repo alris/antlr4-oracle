@@ -1579,6 +1579,12 @@ public interface PlSqlVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitEquality_expression(PlSqlParser.Equality_expressionContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link PlSqlParser#multiset_part}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMultiset_part(PlSqlParser.Multiset_partContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link PlSqlParser#multiset_expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
