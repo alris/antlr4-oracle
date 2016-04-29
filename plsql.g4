@@ -70,7 +70,7 @@ unit_statement
 // Alris: чтобы в парсере перехватывать начало блока определений
 // pl/sql block
 declare_wrapper
-    : DECLARE?
+    : DECLARE declare_spec*
     ;
 
 // Alris: чтобы в парсере перехватывать начало блока определений
@@ -98,7 +98,7 @@ create_function_body
 function_spec
     : FUNCTION function_name ('(' parameter (',' parameter)* ')')?
       RETURN type_spec (invoker_rights_clause|parallel_enable_clause|result_cache_clause|DETERMINISTIC|PIPELINED|AGGREGATE USING implementation_type_name)*
-      (is_or_as (declare_wrapper declare_spec* body | call_spec))?
+      (is_or_as (declare_spec* body | call_spec))?
       ';'
     ;
 
@@ -190,7 +190,7 @@ create_procedure_body
 
 procedure_spec
     : PROCEDURE procedure_name ('(' parameter ( ',' parameter )* ')')? 
-    (invoker_rights_clause? is_or_as (declare_wrapper declare_spec* body | call_spec | EXTERNAL))?
+    (invoker_rights_clause? is_or_as (declare_spec* body | call_spec | EXTERNAL))?
     ';' 
     ;
 
@@ -413,18 +413,18 @@ subprog_decl_in_type
 
 proc_decl_in_type
     : PROCEDURE procedure_name '(' type_elements_parameter (',' type_elements_parameter)* ')' 
-      is_or_as (call_spec | declare_wrapper declare_spec* body ';')
+      is_or_as (call_spec | declare_spec* body ';')
     ;
 
 func_decl_in_type
     : FUNCTION function_name ('(' type_elements_parameter (',' type_elements_parameter)* ')')? 
-      RETURN type_spec is_or_as (call_spec | declare_wrapper declare_spec* body ';')
+      RETURN type_spec is_or_as (call_spec | declare_spec* body ';')
     ;
 
 constructor_declaration
     : FINAL? INSTANTIABLE? CONSTRUCTOR FUNCTION type_spec
       ('(' (SELF IN OUT type_spec ',') type_elements_parameter (',' type_elements_parameter)*  ')')?
-      RETURN SELF AS RESULT is_or_as (call_spec | declare_wrapper declare_spec* body ';')
+      RETURN SELF AS RESULT is_or_as (call_spec | declare_spec* body ';')
     ;
 
 // $>
@@ -793,11 +793,11 @@ exception_handler
 // $>
 
 trigger_block
-    : (declare_wrapper declare_spec+)? body
+    : declare_wrapper? body
     ;
 
 block
-    : (declare_wrapper declare_spec+)? body
+    : declare_wrapper? body
     ;
 
 // $>
