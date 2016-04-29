@@ -1621,7 +1621,7 @@ standard_function
     | MOD '(' expression ',' expression ')'
     | TRANSLATE '(' expression_wrapper (USING (CHAR_CS | NCHAR_CS))? (',' expression_wrapper)* ')'
     | TREAT '(' expression_wrapper AS REF? type_spec ')'
-    | TRIM '(' ((LEADING | TRAILING | BOTH)? quoted_string? FROM)? concatenation_wrapper ')'
+    | TRIM '(' ((LEADING | TRAILING | BOTH)? expression_wrapper? FROM)? expression_wrapper ')'
     | XMLAGG '(' expression_wrapper order_by_clause? ')' ('.' general_element_part)?
     | (XMLCOLATTVAL|XMLFOREST)
       '(' xml_multiuse_expression_element (',' xml_multiuse_expression_element)* ')' ('.' general_element_part)?
