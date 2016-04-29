@@ -1372,7 +1372,7 @@ sql_cursor_expression
     ;
 
 collection_assoc_expression
-    : collection_name ('(' expression ')')* // ассоциативные массивы
+    : collection_name ('(' expression ')')* ('.' variable_name)? // ассоциативные массивы
     ;
 
 collection_type_expression
@@ -1416,10 +1416,10 @@ negated_expression
     ;
 
 equality_expression
-    : (multiset_expression (IS NOT?
+    : collection_type_expression
+    | (multiset_expression (IS NOT?
       (NULL | NAN | PRESENT | INFINITE | A_LETTER SET | EMPTY | OF TYPE? '(' ONLY? type_spec (',' type_spec)* ')'))*)
     | cursor_expression
-    | collection_type_expression
     ;
 
 multiset_part
@@ -1636,7 +1636,7 @@ standard_function
     | XMLQUERY
       '(' concatenation_wrapper xml_passing_clause? RETURNING CONTENT (NULL ON EMPTY)? ')' ('.' general_element_part)?
     | XMLROOT
-      '(' concatenation_wrapper xmlroot_param_version_part (',' xmlroot_param_standalone_part)? ')' ('.' general_element_part)?
+      '(' concatenation_wrapper (',' xmlroot_param_version_part)? (',' xmlroot_param_standalone_part)? ')' ('.' general_element_part)?
     | XMLSERIALIZE
       '(' (DOCUMENT | CONTENT) concatenation_wrapper (AS type_spec)?
       xmlserialize_param_enconding_part? xmlserialize_param_version_part? xmlserialize_param_ident_part? ((HIDE | SHOW) DEFAULTS)? ')'
