@@ -626,7 +626,7 @@ field_spec
     ;
 
 record_var_dec
-    : record_name type_name (PERCENT_ROWTYPE | PERCENT_TYPE) ';'
+    : record_name type_name ('@' link_name)? (PERCENT_ROWTYPE | PERCENT_TYPE) ';'
     ;
 
 // $>
@@ -1363,6 +1363,7 @@ cursor_expression
     | cursor_name PERCENT_NOTFOUND
     | cursor_name PERCENT_FOUND
     | cursor_name PERCENT_ISOPEN
+    | cursor_name PERCENT_ROWCOUNT
     | sql_cursor_expression
     ;
 
@@ -1554,7 +1555,7 @@ TODO scope    {
 // $<CASE - Specific Clauses
 
 simple_case_statement
-    : label_name? ck1=CASE atom simple_case_when_part+  case_else_part? END CASE? label_name?
+    : label_name? ck1=CASE expression simple_case_when_part+  case_else_part? END CASE? label_name?
     ;
 
 simple_case_when_part
@@ -2968,6 +2969,7 @@ PERCENT_ROWTYPE:              '%' R O W T Y P E;
 PERCENT_TYPE:                 '%' T Y P E;
 PERCENT_FOUND:                '%' F O U N D;
 PERCENT_NOTFOUND:             '%' N O T F O U N D;
+PERCENT_ROWCOUNT:             '%' R O W C O U N T;
 PIPELINED:                    P I P E L I N E D;
 PIPE:                         P I P E;
 PIVOT:                        P I V O T;
