@@ -1866,7 +1866,7 @@ into_clause_variable
 
 into_clause
     : INTO into_clause_variable (',' into_clause_variable)* 
-    | BULK COLLECT INTO variable_name (',' variable_name)* 
+    | BULK COLLECT INTO into_clause_variable (',' into_clause_variable)* 
     ;
 
 // $>
@@ -3483,10 +3483,13 @@ MULTI_LINE_COMMENT: '/*' .*? '*/' -> channel(HIDDEN);
 //     : 'prompt' SPACE ( ~('\r' | '\n') )* (NEWLINE|EOF)
 //     ;
 
-// Alris: fix
-SQLPLUS_PROMPT: PROMPT SPACE ( ~('\r' | '\n') )* (NEWLINE|EOF);
+// begin of line cheat!
+BOL : [\r\n\f]+;
 
-SQLPLUS_CALLSCRIPT: AT_SIGN ( ~('\r' | '\n') )* (NEWLINE|EOF);
+// Alris: fix
+SQLPLUS_PROMPT: BOL PROMPT SPACE ( ~('\r' | '\n') )* (NEWLINE|EOF);
+
+SQLPLUS_CALLSCRIPT: BOL AT_SIGN ( ~('\r' | '\n') )* (NEWLINE|EOF);
 
 //{ Rule #360 <NEWLINE>
 fragment
