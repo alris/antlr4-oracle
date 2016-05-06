@@ -1006,7 +1006,9 @@ table_ref_aux
     : (dml_table_expression_clause (pivot_clause | unpivot_clause)?
       | '(' table_ref subquery_operation_part* ')' (pivot_clause | unpivot_clause)?
       | ONLY '(' dml_table_expression_clause ')'
-      | dml_table_expression_clause (pivot_clause | unpivot_clause)?)
+      | dml_table_expression_clause (pivot_clause | unpivot_clause)?
+      | xml_table
+      )
     flashback_query_clause* (/*{isTableAlias()}?*/ table_alias)?
     ;
 
@@ -1606,6 +1608,16 @@ sql_type_conversion
     | plsql_type_conversion
     ;
 
+// Alris: вынесено из standard_function, т.к. они могут быть в SELECT * FROM XMLTABLE()
+xml_table_columns
+    : COLUMNS xml_table_column (',' xml_table_column)*
+    ;
+
+xml_table
+    : XMLTABLE
+      '(' (xml_namespaces_clause ',')? concatenation_wrapper xml_passing_clause? xml_table_columns? ')' ('.' general_element_part)?
+    ;
+
 standard_function
     : over_clause_keyword function_argument_analytic over_clause?
     | /*TODO stantard_function_enabling_using*/ regular_id function_argument_modeling using_clause?
@@ -1642,8 +1654,7 @@ standard_function
       '(' (DOCUMENT | CONTENT) concatenation_wrapper (AS type_spec)?
       xmlserialize_param_enconding_part? xmlserialize_param_version_part? xmlserialize_param_ident_part? ((HIDE | SHOW) DEFAULTS)? ')'
       ('.' general_element_part)?
-    | XMLTABLE
-      '(' xml_namespaces_clause? concatenation_wrapper xml_passing_clause? (COLUMNS xml_table_column (',' xml_table_column))? ')' ('.' general_element_part)?
+    | xml_table
     ;
 
 over_clause_keyword
@@ -1732,8 +1743,10 @@ cost_matrix_clause
     ;
 
 xml_passing_clause
-    : PASSING (BY VALUE)? expression_wrapper column_alias? (',' expression_wrapper column_alias?)
+    : PASSING (BY VALUE)? expression_wrapper column_alias? (',' expression_wrapper column_alias?)*
     ;
+
+// XMLTABLE: https://docs.oracle.com/cd/B19306_01/server.102/b14200/functions228.htm
 
 xml_attributes_clause
     : XMLATTRIBUTES
@@ -1743,7 +1756,7 @@ xml_attributes_clause
 
 xml_namespaces_clause
     : XMLNAMESPACES
-      '(' (concatenation_wrapper column_alias)? (',' concatenation_wrapper column_alias)*
+      '(' (concatenation_wrapper column_alias (',' concatenation_wrapper column_alias)*)?
       xml_general_default_part? ')'
     ;
 
