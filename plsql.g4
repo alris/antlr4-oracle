@@ -32,7 +32,10 @@ compilation_unit
     ;
 
 sql_script
-    : (unit_statement | sql_plus_command | preprocessor_statement)* EOF
+    : ( (unit_statement (';' unit_statement)* ';'?)
+      | sql_plus_command 
+      | preprocessor_statement
+      )* EOF
     ;
 
 unit_statement
@@ -626,7 +629,7 @@ field_spec
     ;
 
 record_var_dec
-    : record_name type_name ('@' link_name)? (PERCENT_ROWTYPE | PERCENT_TYPE) ';'
+    : record_name type_name ('@' link_name)? (PERCENT_ROWTYPE | PERCENT_TYPE default_value_part?) ';'
     ;
 
 // $>
@@ -1821,7 +1824,13 @@ preprocessor_statement
 // SqlPlus
 
 sql_plus_command 
-    : ('/' | whenever_command | exit_command | prompt_command | set_command | call_sql_script_command) ';'?
+    : ('/' 
+        | whenever_command 
+        | exit_command 
+        | prompt_command 
+        | set_command 
+        | call_sql_script_command
+       )
     ;
 
 whenever_command
@@ -2053,7 +2062,7 @@ argument
 
 type_spec
     : datatype
-    | REF? type_name (PERCENT_ROWTYPE | PERCENT_TYPE)?
+    | REF? type_name ('@' link_name)? (PERCENT_ROWTYPE | PERCENT_TYPE)?
     ;
 
 datatype
