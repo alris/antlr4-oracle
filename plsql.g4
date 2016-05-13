@@ -1847,13 +1847,31 @@ exit_command
     ;
 
 // Alris: fix
-prompt_command
-    : SQLPLUS_PROMPT
+// Tricks with PROMPT and @call_script
+SQLPLUS_PROMPT: 
+    PROMPT ( ~('\r' | '\n') )*
+    ;// (NEWLINE|EOF);
+
+SQLPLUS_CALLSCRIPT: 
+    AT_SIGN ( ~('\r' | '\n') )*
+    ;// (NEWLINE|EOF);
+
+prompt_command : 
+    //{
+    //    if (_input.index() > 1) 
+    //        System.out.println(_input.LT(-1));
+    //} 
+    SQLPLUS_PROMPT
     ;
 
-call_sql_script_command
-    : SQLPLUS_CALLSCRIPT
-    ;
+//URL : [a-zA-Z/\\_]+;
+//END_OF_LINE : (NEWLINE|EOF);
+//REST :  ( ~('\r' | '\n') ) | EOF;
+
+call_sql_script_command : 
+    //{System.out.println(_input.LA(-1));} 
+    SQLPLUS_CALLSCRIPT
+    ;//file_name_or_url call_sql_script_parameters;
 
 // Common
 
@@ -3506,14 +3524,6 @@ MULTI_LINE_COMMENT: '/*' .*? '*/' -> channel(HIDDEN);
 // PROMPT
 //     : 'prompt' SPACE ( ~('\r' | '\n') )* (NEWLINE|EOF)
 //     ;
-
-// begin of line cheat!
-BOL : [\r\n\f]+;
-
-// Alris: fix
-SQLPLUS_PROMPT: BOL PROMPT SPACE ( ~('\r' | '\n') )* (NEWLINE|EOF);
-
-SQLPLUS_CALLSCRIPT: BOL AT_SIGN ( ~('\r' | '\n') )* (NEWLINE|EOF);
 
 //{ Rule #360 <NEWLINE>
 fragment

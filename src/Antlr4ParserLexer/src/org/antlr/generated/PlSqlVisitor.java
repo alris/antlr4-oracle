@@ -1783,6 +1783,18 @@ public interface PlSqlVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitSql_type_conversion(PlSqlParser.Sql_type_conversionContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link PlSqlParser#xml_table_columns}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitXml_table_columns(PlSqlParser.Xml_table_columnsContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link PlSqlParser#xml_table}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitXml_table(PlSqlParser.Xml_tableContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link PlSqlParser#standard_function}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

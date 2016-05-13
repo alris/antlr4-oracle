@@ -2960,6 +2960,26 @@ public interface PlSqlListener extends ParseTreeListener {
 	 */
 	void exitSql_type_conversion(PlSqlParser.Sql_type_conversionContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link PlSqlParser#xml_table_columns}.
+	 * @param ctx the parse tree
+	 */
+	void enterXml_table_columns(PlSqlParser.Xml_table_columnsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link PlSqlParser#xml_table_columns}.
+	 * @param ctx the parse tree
+	 */
+	void exitXml_table_columns(PlSqlParser.Xml_table_columnsContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link PlSqlParser#xml_table}.
+	 * @param ctx the parse tree
+	 */
+	void enterXml_table(PlSqlParser.Xml_tableContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link PlSqlParser#xml_table}.
+	 * @param ctx the parse tree
+	 */
+	void exitXml_table(PlSqlParser.Xml_tableContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link PlSqlParser#standard_function}.
 	 * @param ctx the parse tree
 	 */

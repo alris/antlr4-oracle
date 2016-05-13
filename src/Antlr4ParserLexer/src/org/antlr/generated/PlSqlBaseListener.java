@@ -3558,6 +3558,30 @@ public class PlSqlBaseListener implements PlSqlListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterXml_table_columns(PlSqlParser.Xml_table_columnsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitXml_table_columns(PlSqlParser.Xml_table_columnsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterXml_table(PlSqlParser.Xml_tableContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitXml_table(PlSqlParser.Xml_tableContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterStandard_function(PlSqlParser.Standard_functionContext ctx) { }
 	/**
 	 * {@inheritDoc}
