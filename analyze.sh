@@ -7,5 +7,5 @@ source ./common.sh
 #  [-tokens] [-tree] [-gui] [-trace]
 
 echo "# Running: $*"
-# grun $grammar $start_rule $*
 runTest $*
+#runAnalyze $*

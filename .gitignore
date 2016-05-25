@@ -1,6 +1,6 @@
 internal_*/*
 *.class
 *.log
-.metadata/*
+src/.metadata/*
 bin/
 *.properties
