@@ -20,9 +20,6 @@ new_analyzer_path=./bin/analyzer.jar
 
 #  [-tokens] [-tree] [-gui] [-trace]
 
-# java_options='-client -Xms100m -Xmx100m'
-_JAVA_OPTIONS="-Xmx256m -Xms256m"
-
 export CLASSPATH="./internal_class:$jar_path:$new_analyzer_path:$CLASSPATH"
 
 alias runTest='java org.antlr.v4.gui.TestRig $grammar_class $start_rule'
