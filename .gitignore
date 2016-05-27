@@ -1,4 +1,3 @@
-internal_*/*
 *.class
 *.log
 src/.metadata/*

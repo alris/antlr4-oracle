@@ -19,8 +19,43 @@
  */
 grammar PlSql;
 
-@header {
+@header
+{
 package org.antlr.generated;
+}
+
+//@header
+//{
+//package org.antlr.generated;
+
+////import org.antlr.logic.*;
+//}
+
+@lexer::members
+{
+    // возвращает оригинальный текст токена из исходного файла 
+    public String getOriginalText(ParserRuleContext ctx) {
+        System.out.println(ctx.start);
+        System.out.println(ctx.stop);
+
+        if (ctx.start != null) {
+            int a = ctx.start.getStartIndex() + 1;
+            int b = ctx.start.getStartIndex();
+            Interval interval = new Interval(a, b);
+            return _input.getText(interval);
+        }
+        return "x";
+    }
+
+    private CommonToken commonToken(int type, String text) {
+        int stop = this.getCharIndex() - 1;
+        int start = text.isEmpty() ? stop : stop - text.length() + 1;
+        return new CommonToken(this._tokenFactorySourcePair, type, DEFAULT_TOKEN_CHANNEL, start, stop);
+    }
+
+    boolean atStartOfInput() {
+        return super.getCharPositionInLine() == 0 && super.getLine() == 1;
+    }
 }
 
 swallow_to_semi
@@ -35,7 +70,7 @@ sql_script
     : ( (unit_statement (';' unit_statement)* ';'?)
       | sql_plus_command 
       | preprocessor_statement
-      )* EOF
+      )* (';'|SPACES|EOF)? // TODO: no viable alternative at input '<EOF>'
     ;
 
 unit_statement
@@ -629,7 +664,7 @@ field_spec
     ;
 
 record_var_dec
-    : record_name type_name ('@' link_name)? (PERCENT_ROWTYPE | PERCENT_TYPE default_value_part?) ';'
+    : record_name type_name (AT_SIGN link_name)? (PERCENT_ROWTYPE | PERCENT_TYPE default_value_part?) ';'
     ;
 
 // $>
@@ -1846,32 +1881,23 @@ exit_command
     : EXIT 
     ;
 
-// Alris: fix
-// Tricks with PROMPT and @call_script
+// Alris: TODO: Tricks with PROMPT and @call_script
+// Здесь все довольно не типично по причине того, что PROMPT и вызов скрипта не заканчивается ;
 SQLPLUS_PROMPT: 
-    PROMPT ( ~('\r' | '\n') )*
-    ;// (NEWLINE|EOF);
-
-SQLPLUS_CALLSCRIPT: 
-    AT_SIGN ( ~('\r' | '\n') )*
-    ;// (NEWLINE|EOF);
-
-prompt_command : 
-    //{
-    //    if (_input.index() > 1) 
-    //        System.out.println(_input.LT(-1));
-    //} 
-    SQLPLUS_PROMPT
+    PROMPT ~[\r\n]* NEWLINE
     ;
 
-//URL : [a-zA-Z/\\_]+;
-//END_OF_LINE : (NEWLINE|EOF);
-//REST :  ( ~('\r' | '\n') ) | EOF;
+SQLPLUS_CALLSCRIPT: 
+    AT_SIGN ~[\r\n]* NEWLINE
+    ;
+
+prompt_command : 
+    SQLPLUS_PROMPT 
+    ;
 
 call_sql_script_command : 
-    //{System.out.println(_input.LA(-1));} 
     SQLPLUS_CALLSCRIPT
-    ;//file_name_or_url call_sql_script_parameters;
+    ;
 
 // Common
 
@@ -1944,7 +1970,7 @@ schema_name
     ;
 
 routine_name
-    : id ('.' id_expression)* ('@' link_name)?
+    : id ('.' id_expression)* (AT_SIGN link_name)?
     ;
 
 package_name
@@ -1976,7 +2002,7 @@ query_name
     ;
 
 constraint_name
-    : id ('.' id_expression)* ('@' link_name)?
+    : id ('.' id_expression)* (AT_SIGN link_name)?
     ;
 
 label_name
@@ -2040,7 +2066,7 @@ column_name
 
 tableview_name
     : id ('.' id_expression)? 
-      ('@' link_name | /*TODO{!(input.LA(2) == SQL92_RESERVED_BY)}?*/ partition_extension_clause)?
+      (AT_SIGN link_name | /*TODO{!(input.LA(2) == SQL92_RESERVED_BY)}?*/ partition_extension_clause)?
     ;
 
 char_set_name
@@ -2080,7 +2106,7 @@ argument
 
 type_spec
     : datatype
-    | REF? type_name ('@' link_name)? (PERCENT_ROWTYPE | PERCENT_TYPE)?
+    | REF? type_name (AT_SIGN link_name)? (PERCENT_ROWTYPE | PERCENT_TYPE)?
     ;
 
 datatype
@@ -3492,7 +3518,7 @@ SPACES
     // : [ \t\r\n]+ -> skip 
     : [ \t\r\n]+ -> channel(HIDDEN)
     ;
-    
+
 //{ Rule #504 <SIMPLE_LETTER> - simple_latin _letter was generalised into SIMPLE_LETTER
 //  Unicode is yet to be implemented - see NSF0
 fragment
@@ -3528,6 +3554,14 @@ MULTI_LINE_COMMENT: '/*' .*? '*/' -> channel(HIDDEN);
 //{ Rule #360 <NEWLINE>
 fragment
 NEWLINE: '\r'? '\n';
+
+// TODO: trick with begin of file
+//NEWLINE
+//    : ( {atStartOfInput()}?
+//    | ( '\r'? '\n' | '\r' ) SPACES?
+//    ) -> channel(HIDDEN)
+//    ;
+
     
 fragment
 SPACE: [ \t];
