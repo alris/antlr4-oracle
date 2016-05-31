@@ -1957,42 +1957,6 @@ public interface PlSqlVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitPreprocessor_statement(PlSqlParser.Preprocessor_statementContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link PlSqlParser#sql_plus_command}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitSql_plus_command(PlSqlParser.Sql_plus_commandContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link PlSqlParser#whenever_command}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitWhenever_command(PlSqlParser.Whenever_commandContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link PlSqlParser#set_command}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitSet_command(PlSqlParser.Set_commandContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link PlSqlParser#exit_command}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitExit_command(PlSqlParser.Exit_commandContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link PlSqlParser#prompt_command}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitPrompt_command(PlSqlParser.Prompt_commandContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link PlSqlParser#call_sql_script_command}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitCall_sql_script_command(PlSqlParser.Call_sql_script_commandContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link PlSqlParser#partition_extension_clause}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

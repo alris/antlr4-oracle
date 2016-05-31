@@ -3250,66 +3250,6 @@ public interface PlSqlListener extends ParseTreeListener {
 	 */
 	void exitPreprocessor_statement(PlSqlParser.Preprocessor_statementContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link PlSqlParser#sql_plus_command}.
-	 * @param ctx the parse tree
-	 */
-	void enterSql_plus_command(PlSqlParser.Sql_plus_commandContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link PlSqlParser#sql_plus_command}.
-	 * @param ctx the parse tree
-	 */
-	void exitSql_plus_command(PlSqlParser.Sql_plus_commandContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link PlSqlParser#whenever_command}.
-	 * @param ctx the parse tree
-	 */
-	void enterWhenever_command(PlSqlParser.Whenever_commandContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link PlSqlParser#whenever_command}.
-	 * @param ctx the parse tree
-	 */
-	void exitWhenever_command(PlSqlParser.Whenever_commandContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link PlSqlParser#set_command}.
-	 * @param ctx the parse tree
-	 */
-	void enterSet_command(PlSqlParser.Set_commandContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link PlSqlParser#set_command}.
-	 * @param ctx the parse tree
-	 */
-	void exitSet_command(PlSqlParser.Set_commandContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link PlSqlParser#exit_command}.
-	 * @param ctx the parse tree
-	 */
-	void enterExit_command(PlSqlParser.Exit_commandContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link PlSqlParser#exit_command}.
-	 * @param ctx the parse tree
-	 */
-	void exitExit_command(PlSqlParser.Exit_commandContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link PlSqlParser#prompt_command}.
-	 * @param ctx the parse tree
-	 */
-	void enterPrompt_command(PlSqlParser.Prompt_commandContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link PlSqlParser#prompt_command}.
-	 * @param ctx the parse tree
-	 */
-	void exitPrompt_command(PlSqlParser.Prompt_commandContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link PlSqlParser#call_sql_script_command}.
-	 * @param ctx the parse tree
-	 */
-	void enterCall_sql_script_command(PlSqlParser.Call_sql_script_commandContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link PlSqlParser#call_sql_script_command}.
-	 * @param ctx the parse tree
-	 */
-	void exitCall_sql_script_command(PlSqlParser.Call_sql_script_commandContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link PlSqlParser#partition_extension_clause}.
 	 * @param ctx the parse tree
 	 */

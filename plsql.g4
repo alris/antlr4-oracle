@@ -68,7 +68,7 @@ compilation_unit
 
 sql_script
     : ( (unit_statement (';' unit_statement)* ';'?)
-      | sql_plus_command 
+      //| sql_plus_command 
       | preprocessor_statement
       )* (';'|SPACES|EOF)? // TODO: no viable alternative at input '<EOF>'
     ;
@@ -1858,46 +1858,46 @@ preprocessor_statement
     
 // SqlPlus
 
-sql_plus_command 
-    : ('/' 
-        | whenever_command 
-        | exit_command 
-        | prompt_command 
-        | set_command 
-        | call_sql_script_command
-       )
-    ;
+//sql_plus_command 
+//    : ('/' 
+//        | whenever_command 
+//        | exit_command 
+//        | prompt_command 
+//        | set_command 
+//        | call_sql_script_command
+//       )
+//    ;
 
-whenever_command
-    : WHENEVER (SQLERROR | OSERROR)
-      (EXIT (SUCCESS | FAILURE | WARNING) (COMMIT | ROLLBACK) | CONTINUE (COMMIT|ROLLBACK|NONE))
-    ;
+//whenever_command
+//    : WHENEVER (SQLERROR | OSERROR)
+//      (EXIT (SUCCESS | FAILURE | WARNING) (COMMIT | ROLLBACK) | CONTINUE (COMMIT|ROLLBACK|NONE))
+//    ;
 
-set_command
-    : SET regular_id (CHAR_STRING | ON | OFF | /*EXACT_NUM_LIT*/numeric | regular_id) // TODO
-    ;
+//set_command
+//    : SET regular_id (CHAR_STRING | ON | OFF | /*EXACT_NUM_LIT*/numeric | regular_id) // TODO
+//    ;
 
-exit_command
-    : EXIT 
-    ;
+//exit_command
+//    : EXIT 
+//    ;
 
 // Alris: TODO: Tricks with PROMPT and @call_script
 // Здесь все довольно не типично по причине того, что PROMPT и вызов скрипта не заканчивается ;
-SQLPLUS_PROMPT: 
-    PROMPT ~[\r\n]* NEWLINE
-    ;
+//SQLPLUS_PROMPT: 
+//    PROMPT ~[\r\n]* NEWLINE
+//    ;
 
-SQLPLUS_CALLSCRIPT: 
-    AT_SIGN ~[\r\n]* NEWLINE
-    ;
+//SQLPLUS_CALLSCRIPT: 
+//    AT_SIGN ~[\r\n]* NEWLINE
+//    ;
 
-prompt_command : 
-    SQLPLUS_PROMPT 
-    ;
+//prompt_command : 
+//    SQLPLUS_PROMPT 
+//    ;
 
-call_sql_script_command : 
-    SQLPLUS_CALLSCRIPT
-    ;
+//call_sql_script_command : 
+//    SQLPLUS_CALLSCRIPT
+//    ;
 
 // Common
 
