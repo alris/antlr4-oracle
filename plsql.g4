@@ -1489,6 +1489,7 @@ relational_expression
 compound_expression
     : concatenation
       (NOT? (IN in_elements | BETWEEN between_elements | like_type concatenation like_escape_part?))?
+    | function_call
     ;
 
 like_type
@@ -2056,8 +2057,9 @@ collection_name
     : id ('.' id_expression)?
     ;
 
+// database[.domain [.domain ]... ] [ @ connection_qualifier ]
 link_name
-    : id
+    : id ('.' id)*
     ;
 
 column_name
