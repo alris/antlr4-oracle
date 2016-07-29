@@ -1,0 +1,8 @@
+CREATE OR REPLACE PACKAGE scott.PKG3
+AS
+   PROCEDURE p_call_pkg1;
+   PROCEDURE p_call_pkg2;
+   PROCEDURE p1;
+   PROCEDURE p2;
+END;
+/
