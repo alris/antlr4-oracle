@@ -42,7 +42,7 @@ public class PlSqlCallGraph {
         FileInputStream parseFile = new FileInputStream(fileName);
         try {
             tree = new PlSqlParserTree(new ANTLRInputStream(parseFile));
-            
+
             CallGraphVisitor visitor = new CallGraphVisitor(tree);
 
             visitor.visit();
@@ -54,9 +54,11 @@ public class PlSqlCallGraph {
             parseFile.close();
         }
 
-//        PlSqlUtils.writeToFile(fileName + "_2", parsedSql);
+        //        PlSqlUtils.writeToFile(fileName + "_2", parsedSql);
 
         System.out.println("End");
+
+        CallGraphVisitor.idMap.forEach((k, v) -> System.out.println("Key: " + k + ": Value: " + v));
     }
 
     /**

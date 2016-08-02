@@ -7,6 +7,7 @@ import java.io.UnsupportedEncodingException;
 import org.antlr.generated.PlSqlParser;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.misc.Interval;
 
 public class PlSqlUtils {
@@ -84,6 +85,13 @@ public class PlSqlUtils {
         int b = ctx.stop.getStopIndex();
         Interval interval = new Interval(a, b);
         return input.getText(interval);
+    }
+    
+    public static int getLine(/*ANTLRInputStream input,*/ ParserRuleContext ctx) {
+        //Interval sourceInterval = ctx.getSourceInterval();        
+        //Token firstToken = input.get(sourceInterval.a);
+        //int line = firstToken.getLine();
+        return ctx.start.getLine();
     }
 
     // логгирование правила (для конкатенаций)
