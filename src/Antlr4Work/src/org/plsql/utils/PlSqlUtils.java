@@ -1,13 +1,18 @@
 package org.plsql.utils;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.antlr.generated.PlSqlParser;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.ParserRuleContext;
-import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.misc.Interval;
 
 public class PlSqlUtils {
@@ -16,6 +21,31 @@ public class PlSqlUtils {
 
     // допустимые символы для генерации идентификатора Oracle
     private static final String validIdentifierChars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ$#_";
+    
+    public static Logger loger = Logger.getLogger("PlSqlLogger");
+    
+    public static Properties loadProperties() {
+        InputStream input = null;
+        Properties prop = new Properties();
+
+        try {
+            input = new FileInputStream("config.properties");
+            prop.load(input);
+        } catch (IOException e) {
+            PlSqlUtils.loger.log(Level.SEVERE, "Error loading config.properties", e);
+        }
+
+        if (input != null) {
+            try {
+                input.close();
+            } catch (IOException e) {
+                PlSqlUtils.loger.log(Level.SEVERE, "Error closing config.properties", e);
+            }
+        }
+        
+        return prop;
+    }
+    
 
     public static String unquote(String s) {
         if (s != null && ((s.startsWith("\"") && s.endsWith("\"")) || (s.startsWith("'") && s.endsWith("'")))) {
@@ -32,7 +62,7 @@ public class PlSqlUtils {
         // allowed $ # _, maximum 30 symbols
         str = str.toLowerCase().trim();
         str = str.replace("%s", "$");
-        str = str.replaceAll("[ .,:;-=]+", "_"); // чтобы разделителить текст
+        str = str.replaceAll("[ .,:;-=]+", "_"); // чтобы разделить текст
 
         for (char ch : str.toCharArray()) {
             if (validIdentifierChars.indexOf(ch) >= 0) {
