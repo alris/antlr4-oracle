@@ -22,7 +22,7 @@ public class PlSqlUtils {
     // допустимые символы для генерации идентификатора Oracle
     private static final String validIdentifierChars = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ$#_";
     
-    public static Logger loger = Logger.getLogger("PlSqlLogger");
+    public static Logger logger = Logger.getLogger("PlSqlLogger");
     
     public static Properties loadProperties() {
         InputStream input = null;
@@ -32,14 +32,14 @@ public class PlSqlUtils {
             input = new FileInputStream("config.properties");
             prop.load(input);
         } catch (IOException e) {
-            PlSqlUtils.loger.log(Level.SEVERE, "Error loading config.properties", e);
+            PlSqlUtils.logger.log(Level.SEVERE, "Error loading config.properties", e);
         }
 
         if (input != null) {
             try {
                 input.close();
             } catch (IOException e) {
-                PlSqlUtils.loger.log(Level.SEVERE, "Error closing config.properties", e);
+                PlSqlUtils.logger.log(Level.SEVERE, "Error closing config.properties", e);
             }
         }
         

@@ -50,7 +50,7 @@ public class PlSqlCallGraph {
                 try {
                     processFile(args[i]);
                 } catch (IOException e) {
-                    PlSqlUtils.loger.log(Level.WARNING, "Error processing " + args[i], e);
+                    PlSqlUtils.logger.log(Level.WARNING, "Error processing " + args[i], e);
                 }
             }
         } else {
@@ -60,7 +60,7 @@ public class PlSqlCallGraph {
                 try {
                     processFile(fileName);
                 } catch (IOException e) {
-                    PlSqlUtils.loger.log(Level.WARNING, "Error processing " + fileName, e);
+                    PlSqlUtils.logger.log(Level.WARNING, "Error processing " + fileName, e);
                 }
             } else {
                 System.out.println("No files to parse");

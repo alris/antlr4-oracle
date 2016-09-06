@@ -11,7 +11,6 @@ import org.plsql.utils.PlSqlErrorListener;
 /**
  * Класс для объединения всей логики парсинга для использования его в
  * PlSqlRuleVisitor
- * 
  */
 public class PlSqlParserTree {
 
