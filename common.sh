@@ -1,4 +1,5 @@
 #!/bin/sh
+current_dir=$(dirname $0)
 
 ###############################################################################
 antlr='antlr-4.5.2-complete.jar'
@@ -11,16 +12,16 @@ grammar_class=org.antlr.generated.PlSql
 
 ###############################################################################
 
-src_path=./src/Antlr4ParserLexer/src/org/antlr/generated
-jar_path=./src/Antlr4ParserLexer/lib/$antlr
+src_path=$current_dir/src/Antlr4ParserLexer/src/org/antlr/generated
+jar_path=$current_dir/src/Antlr4ParserLexer/lib/$antlr
 
-new_analyzer_path=./bin/analyzer.jar
+new_analyzer_path=$current_dir/bin/analyzer.jar
 
 ###############################################################################
 
 #  [-tokens] [-tree] [-gui] [-trace]
 
-export CLASSPATH="./internal_class:$jar_path:$new_analyzer_path:$CLASSPATH"
+export CLASSPATH="$current_dir/internal_class:$jar_path:$new_analyzer_path:$CLASSPATH"
 
 alias runTest='java org.antlr.v4.gui.TestRig $grammar_class $start_rule'
 

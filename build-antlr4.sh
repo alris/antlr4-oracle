@@ -1,7 +1,8 @@
 #!/bin/sh
+current_dir=$(dirname $0)
 
 ###############################################################################
-source ./common.sh
+source $current_dir/common.sh
 ###############################################################################
 
 echo "Building antlr4 files for java!"
