@@ -968,7 +968,7 @@ explain_statement
     ;
 
 select_statement
-    : subquery_factoring_clause? subquery (for_update_clause | order_by_clause)*
+    : /*subquery_factoring_clause?*/ subquery (for_update_clause | order_by_clause)*
     ;
 
 // $<Select - Specific Clauses
@@ -1004,7 +1004,7 @@ subquery_basic_elements
     ;
 
 query_block
-    : SELECT (DISTINCT | UNIQUE | ALL)? ('*' | selected_element (',' selected_element)*)
+    : subquery_factoring_clause? SELECT (DISTINCT | UNIQUE | ALL)? ('*' | selected_element (',' selected_element)*)
       into_clause? 
       from_clause 
       where_clause? 
@@ -1809,7 +1809,7 @@ xml_general_default_part
     ;
 
 xml_multiuse_expression_element
-    : expression (AS (id_expression | EVALNAME concatenation))?
+    : expression (AS? (id_expression | EVALNAME concatenation))?
     ;
 
 xmlroot_param_version_part
@@ -1908,7 +1908,7 @@ partition_extension_clause
 
 column_alias
     : AS? (id | alias_quoted_string)
-    | AS
+    //| AS
     ;
 
 table_alias
@@ -2264,7 +2264,14 @@ concatenation_op
 outer_join_sign
     : '(' '+' ')'
     ;
-    
+
+// Alris: TODO: описать подробнее
+// Пример: - сюда должны включаться те ТОКЕНЫ, что можно встретить в качестве column_alias
+//   SELECT 1 AS to_char FROM dual;
+//   TO_CHAR: T O _ C H A R;
+//   regular_id : .... 
+//   | TO_CHAR
+//   | ...
 regular_id
     : REGULAR_ID
     | A_LETTER
@@ -2272,14 +2279,14 @@ regular_id
     | AFTER
     | AGENT
     | AGGREGATE
-    //| ALL
-    //| ALTER
+    | ALL
+    | ALTER
     | ANALYZE
-    //| AND
-    //| ANY
+    | AND
+    | ANY
     | ARRAY
-    // | AS
-    //| ASC
+    | AS
+    | ASC
     | ASSOCIATE
     | AT
     | ATTRIBUTE
@@ -2290,8 +2297,8 @@ regular_id
     | AUTONOMOUS_TRANSACTION
     | BATCH
     | BEFORE
-    //| BEGIN
-    // | BETWEEN
+    | BEGIN
+    | BETWEEN
     | BFILE
     | BINARY_DOUBLE
     | BINARY_FLOAT
@@ -2301,21 +2308,21 @@ regular_id
     | BODY
     | BOOLEAN
     | BOTH
-    // | BREADTH
+    | BREADTH
     | BULK
-    // | BY
+    | BY
     | BYTE
     | C_LETTER
     | CACHE
     | CALL
     | CANONICAL
     | CASCADE
-    //| CASE
+    | CASE
     | CAST
     | CHAR
     | CHAR_CS
     | CHARACTER
-    //| CHECK
+    | CHECK
     | CHR
     | CLOB
     | CLOSE
@@ -2328,8 +2335,8 @@ regular_id
     | COMPATIBILITY
     | COMPILE
     | COMPOUND
-    //| CONNECT
-    //| CONNECT_BY_ROOT
+    | CONNECT
+    | CONNECT_BY_ROOT
     | CONSTANT
     | CONSTRAINT
     | CONSTRAINTS
@@ -2342,17 +2349,17 @@ regular_id
     | CORRUPT_XID_ALL
     | COST
     | COUNT
-    //| CREATE
+    | CREATE
     | CROSS
     | CUBE
-    //| CURRENT
+    | CURRENT
     | CURRENT_USER
     | CURSOR
     | CUSTOMDATUM
     | CYCLE
     | DATA
     | DATABASE
-    //| DATE
+    | DATE
     | DAY
     | DB_ROLE_CHANGE
     | DBTIMEZONE
@@ -2360,81 +2367,81 @@ regular_id
     | DEBUG
     | DEC
     | DECIMAL
-    //| DECLARE
+    | DECLARE
     | DECOMPOSE
     | DECREMENT
-    //| DEFAULT
+    | DEFAULT
     | DEFAULTS
     | DEFERRED
     | DEFINER
     | DELETE
-    // | DEPTH
-    //| DESC
+    | DEPTH
+    | DESC
     | DETERMINISTIC
     | DIMENSION
     | DISABLE
     | DISASSOCIATE
-    //| DISTINCT
+    | DISTINCT
     | DOCUMENT
     | DOUBLE
-    //| DROP
+    | DROP
     | DSINTERVAL_UNCONSTRAINED
     | EACH
     | ELEMENT
-    //| ELSE
-    //| ELSIF
+    | ELSE
+    | ELSIF
     | EMPTY
     | ENABLE
     | ENCODING
-    //| END
+    | END
     | ENTITYESCAPING
     | ERRORS
     | ESCAPE
     | EVALNAME
-    //| EXCEPT
+    | EXCEPT
     | EXCEPTION
     | EXCEPTION_INIT
     | EXCEPTIONS
     | EXCLUDE
-    //| EXCLUSIVE
+    | EXCLUSIVE
     | EXECUTE
-    //| EXISTS
+    | EXISTS
     | EXIT
     | EXPLAIN
     | EXTERNAL
     | EXTRACT
     | FAILURE
-    //| FALSE
-    //| FETCH
+    | FALSE
+    | FETCH
     | FINAL
     | FIRST
     | FIRST_VALUE
     | FLOAT
     | FOLLOWING
     | FOLLOWS
-    //| FOR
+    | FOR
     | FORALL
     | FORCE
-    // | FROM
+    | FROM
     | FULL
     | FUNCTION
-    //| GOTO
-    //| GRANT
-    //| GROUP
+    | GOTO
+    | GRANT
+    | GROUP
     | GROUPING
     | HASH
-    //| HAVING
+    | HAVING
     | HIDE
     | HOUR
-    //| IF
+    | IF
     | IGNORE
     | IMMEDIATE
-    // | IN
+    | IN
     | INCLUDE
     | INCLUDING
     | INCREMENT
     | INDENT
-    //| INDEX
+    | INDEX
     | INDEXED
     | INDICATOR
     | INDICES
@@ -2442,16 +2449,16 @@ regular_id
     | INLINE
     | INNER
     | INOUT
-    //| INSERT
+    | INSERT
     | INSTANTIABLE
     | INSTEAD
     | INT
     | INTEGER
-    //| INTERSECT
+    | INTERSECT
     | INTERVAL
-    // | INTO
+    | INTO
     | INVALIDATE
-    //| IS
+    | IS
     | ISOLATION
     | ITERATE
     | JAVA
@@ -2464,13 +2471,13 @@ regular_id
     | LEFT
     | LEVEL
     | LIBRARY
-    // | LIKE
+    | LIKE
     | LIKE2
     | LIKE4
     | LIKEC
     | LIMIT
     | LOCAL
-    //| LOCK
+    | LOCK
     | LOCKED
     | LOG
     | LOGOFF
@@ -2484,15 +2491,15 @@ regular_id
     | MEASURES
     | MEMBER
     | MERGE
-    //| MINUS
+    | MINUS
     | MINUTE
     | MINVALUE
     | MLSLABEL
-    //| MODE
+    | MODE
     | MODEL
     | MODIFY
     | MONTH
-    //| MULTISET
+    | MULTISET
     | NAME
     | NAN
     | NATURAL
@@ -2505,34 +2512,34 @@ regular_id
     | NEW
     | NO
     | NOAUDIT
-    // | NOCACHE
+    | NOCACHE
     | NOCOPY
     | NOCYCLE
     | NOENTITYESCAPING
-    //| NOMAXVALUE
-    //| NOMINVALUE
+    | NOMAXVALUE
+    | NOMINVALUE
     | NONE
-    // | NOORDER
+    | NOORDER
     | NOSCHEMACHECK
-    //| NOT
-    //| NOWAIT
-    // | NULL
+    | NOT
+    | NOWAIT
+    | NULL
     | NULLS
     | NUMBER
     | NUMERIC
     | NVARCHAR2
     | OBJECT
-    //| OF
+    | OF
     | OFF
     | OID
     | OLD
-    //| ON
+    | ON
     | ONLY
     | OPEN
-    //| OPTION
-    //| OR
+    | OPTION
+    | OR
     | ORADATA
-    //| ORDER
+    | ORDER
     | ORDINALITY
     | OSERROR
     | OUT
@@ -2552,7 +2559,7 @@ regular_id
     //| PERCENT_FOUND
     //| PERCENT_NOTFOUND
     | PIPELINED
-    //| PIVOT
+    | PIVOT
     | PLAN
     | PLS_INTEGER
     | POSITIVE
@@ -2561,8 +2568,8 @@ regular_id
     | PRECEDING
     | PRECISION
     | PRESENT
-    //| PRIOR
-    //| PROCEDURE
+    | PRIOR
+    | PROCEDURE
     | RAISE
     | RANGE
     | RAW
@@ -2584,7 +2591,7 @@ regular_id
     | RETURNING
     | REUSE
     | REVERSE
-    //| REVOKE
+    | REVOKE
     | RIGHT
     | ROLLBACK
     | ROLLUP
@@ -2598,13 +2605,13 @@ regular_id
     | SCHEMA
     | SCHEMACHECK
     | SCN
-    // | SEARCH
+    | SEARCH
     | SECOND
     | SEED
     | SEGMENT
-    // | SELECT
+    | SELECT
     | SELF
-    // | SEQUENCE
+    | SEQUENCE
     | SEQUENTIAL
     | SERIALIZABLE
     | SERIALLY_REUSABLE
@@ -2613,14 +2620,14 @@ regular_id
     | SET
     | SETS
     | SETTINGS
-    //| SHARE
+    | SHARE
     | SHOW
     | SHUTDOWN
     | SIBLINGS
     | SIGNTYPE
     | SIMPLE_INTEGER
     | SINGLE
-    //| SIZE
+    | SIZE
     | SKIP_
     | SMALLINT
     | SNAPSHOT
@@ -2630,7 +2637,7 @@ regular_id
     | SQLERROR
     | SQL_PERCENT_ROWCOUNT // TODO: должен ли он быть здесь?
     | STANDALONE
-    //| START
+    | START
     | STARTUP
     | STATEMENT
     | STATEMENT_ID
@@ -2643,9 +2650,9 @@ regular_id
     | SUBTYPE
     | SUCCESS
     | SUSPEND
-    //| TABLE
-    //| THE
-    //| THEN
+    | TABLE
+    | THE
+    | THEN
     | TIME
     | TIMESTAMP
     | TIMESTAMP_LTZ_UNCONSTRAINED
@@ -2655,32 +2662,32 @@ regular_id
     | TIMEZONE_HOUR
     | TIMEZONE_MINUTE
     | TIMEZONE_REGION
-    //| TO
+    | TO
     | TRAILING
     | TRANSACTION
     | TRANSLATE
     | TREAT
     | TRIGGER
     | TRIM
-    //| TRUE
+    | TRUE
     | TRUNCATE
     | TYPE
     | UNBOUNDED
     | UNDER
-    //| UNION
-    //| UNIQUE
+    | UNION
+    | UNIQUE
     | UNLIMITED
-    //| UNPIVOT
+    | UNPIVOT
     | UNTIL
-    //| UPDATE
+    | UPDATE
     | UPDATED
     | UPSERT
     | UROWID
     | USE
-    //| USING
+    | USING
     | VALIDATE
     | VALUE
-    //| VALUES
+    | VALUES
     | VARCHAR
     | VARCHAR2
     | VARIABLE
@@ -2691,11 +2698,11 @@ regular_id
     | WAIT
     | WARNING
     | WELLFORMED
-    // | WHEN
+    | WHEN
     | WHENEVER
-    // | WHERE
+    | WHERE
     | WHILE
-    //| WITH
+    | WITH
     | WITHIN
     | WORK
     | WRITE
@@ -2747,6 +2754,8 @@ regular_id
     | STDDEV
     | VAR_
     | COVAR_
+    // нехорошо называть функции в пакете, как зарезервированные слова
+    | TO_CHAR
     ;
 
 A_LETTER:                     A;
