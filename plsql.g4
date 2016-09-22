@@ -433,7 +433,7 @@ sqlj_object_type
     ;
 
 type_body
-    : BODY type_name is_or_as type_body_elements (',' type_body_elements)* END
+    : BODY type_name is_or_as (type_body_elements)+ END
     ;
 
 type_body_elements
@@ -1849,10 +1849,18 @@ PP_ERROR:   '$' E R R O R;
 boolean_static_expression : expression; // simple condition
 preprocessor_internal_statement : declare_spec+ | seq_of_statements | sql_script;
 
-preprocessor_statement
-    :   PP_IF boolean_static_expression PP_THEN preprocessor_internal_statement?
-            ( PP_ELSIF boolean_static_expression PP_THEN preprocessor_internal_statement? )*
-            ( PP_ELSE preprocessor_internal_statement? )?
+// Alris TODO: preprocessor_internal_statement может быть пустой строкой в том случае, если это не вредит компил€ции
+// пример, не вызывающий ошибок компил€ции:
+//BEGIN
+//   $IF DBMS_DB_VERSION.version < 10 $THEN
+//   $ELSIF 1 = 1 $THEN -- пусто
+//   $ELSE -- пусто
+//   $END
+//END;
+preprocessor_statement 
+    :   PP_IF boolean_static_expression PP_THEN preprocessor_internal_statement
+            ( PP_ELSIF boolean_static_expression PP_THEN preprocessor_internal_statement )*
+            ( PP_ELSE preprocessor_internal_statement )?
         PP_END
     ;
 // } preprocessor
