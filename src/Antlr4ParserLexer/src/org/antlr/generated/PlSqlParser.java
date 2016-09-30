@@ -1,4 +1,4 @@
-// Generated from PlSql.g4 by ANTLR 4.5.2
+// Generated from PlSql.g4 by ANTLR 4.5.3
 
 package org.antlr.generated;
 
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class PlSqlParser extends Parser {
-	static { RuntimeMetaData.checkVersion("4.5.2", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.5.3", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
