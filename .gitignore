@@ -2,5 +2,7 @@
 *.log
 java/.metadata/
 java/bin/
-csharp/
-
+csharp/bin/
+csharp/obj/
+grammar/PlSql.g4
+csharp/packages/

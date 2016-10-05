@@ -1,0 +1,18 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+# SharpDevelop 4.4
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "analyzer", "analyzer.csproj", "{3EE25398-7791-45B7-AE5F-2C00AE4E4A0C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3EE25398-7791-45B7-AE5F-2C00AE4E4A0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EE25398-7791-45B7-AE5F-2C00AE4E4A0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EE25398-7791-45B7-AE5F-2C00AE4E4A0C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3EE25398-7791-45B7-AE5F-2C00AE4E4A0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+EndGlobal

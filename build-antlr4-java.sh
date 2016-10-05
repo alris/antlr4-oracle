@@ -6,6 +6,9 @@ source $current_dir/common.sh
 ###############################################################################
 
 echo "Building antlr4 files for java!"
+
+make_grammar_with grammar/java_addon.g4
+
 antlr4 $grammar $* -Dlanguage=Java -o $java_src_path -visitor
 
 echo "Compiling java!"
