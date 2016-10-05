@@ -1,5 +1,0 @@
-<project>
-  <target name="build">
-    <ant antfile="build.xml" dir="./src/PlSqlLiteralExtractor/" target="create_run_jar" />
-  </target>
-</project>

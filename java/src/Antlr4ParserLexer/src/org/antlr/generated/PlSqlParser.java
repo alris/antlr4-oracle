@@ -1,4 +1,4 @@
-// Generated from PlSql.g4 by ANTLR 4.5.3
+// Generated from grammar/PlSql.g4 by ANTLR 4.5.3
 
 package org.antlr.generated;
 

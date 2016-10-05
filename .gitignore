@@ -1,5 +1,6 @@
 *.class
 *.log
-.metadata/
-bin/
+java/.metadata/
+java/bin/
+csharp/
 

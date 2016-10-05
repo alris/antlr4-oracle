@@ -1,2 +1,2 @@
 build:
-  sh ./build-antlr4.sh
+  sh build-antlr4-java.sh

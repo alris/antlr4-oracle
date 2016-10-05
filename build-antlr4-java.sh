@@ -6,8 +6,8 @@ source $current_dir/common.sh
 ###############################################################################
 
 echo "Building antlr4 files for java!"
-antlr4 $grammar $* -Dlanguage=Java -o $src_path -visitor
+antlr4 $grammar $* -Dlanguage=Java -o $java_src_path -visitor
 
 echo "Compiling java!"
-[ -d 'internal_class' ] || mkdir internal_class
-javac -g:none -d internal_class $src_path/*.java 
+[ -d "$java_internal_class" ] || mkdir "$java_internal_class"
+javac -g:none -d "$java_internal_class" $java_src_path/*.java 
