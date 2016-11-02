@@ -9,6 +9,7 @@ import org.antlr.v4.runtime.ANTLRInputStream;
 import org.plsql.utils.*;
 import org.plsql.*;
 import org.plsql.visitor.*;
+import org.plsql.visitor.CallGraphVisitor.VisitMode;
 
 public class PlSqlCallGraph {
 
@@ -26,6 +27,12 @@ public class PlSqlCallGraph {
 
             CallGraphVisitor visitor = new CallGraphVisitor(tree);
 
+            visitor.visitMode = VisitMode.FIRST_PASS;
+            visitor.visit();
+
+            CallGraphVisitor.idMap.forEach((k, v) -> System.out.println("Key: [" + k + "] = Value is " + v));
+
+            visitor.visitMode = VisitMode.SECOND_PASS;
             visitor.visit();
 
             parsedSql = tree.getResultText();
@@ -38,8 +45,6 @@ public class PlSqlCallGraph {
         //        PlSqlUtils.writeToFile(fileName + "_2", parsedSql);
 
         System.out.println("End");
-
-        CallGraphVisitor.idMap.forEach((k, v) -> System.out.println("Key: " + k + ": Value: " + v));
     }
 
     public static void main(String[] args) {
